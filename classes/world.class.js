@@ -5,17 +5,30 @@ class World {
         new Chicken(),
         new Chicken()
     ];
-
+    clouds = [
+        new Cloud(),
+        new Cloud()
+    ];
+    canvas;
     ctx;
 
     constructor(canvas) {
         this.ctx = canvas.getContext("2d");
+        this.canvas = canvas;
         this.draw();
     }
 
     draw() {
-        this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.width, this.character.height);
+        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-        requestAnimationFrame(() => this.draw());
+        this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.width, this.character.height);
+        this.enemies.forEach(enemy => {
+            this.ctx.drawImage(enemy.img, enemy.x, enemy.y, enemy.width, enemy.height);
+        });    
+        this.clouds.forEach(cloud => {
+            this.ctx.drawImage(cloud.img, cloud.x, cloud.y, cloud.width, cloud.height);
+        });
+
+        requestAnimationFrame(() => this.draw()); // Je besser die Grafikkarte, desto höher die fps
     }
 }
