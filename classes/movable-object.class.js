@@ -33,12 +33,12 @@ class MovableObject {
     }
 
     playAnimation(images) {
-        if (this.currentImage >= this.IMAGES_WALKING.length) {
-                    this.currentImage = 0;
-                }
-                let path = images[this.currentImage];
-                this.img = this.imageCache[path];
-                this.currentImage++;
+        if (this.currentImage >= images.length) {
+            this.currentImage = 0;
+        }
+        let path = images[this.currentImage];
+        this.img = this.imageCache[path];
+        this.currentImage++;
     }
 }
 
