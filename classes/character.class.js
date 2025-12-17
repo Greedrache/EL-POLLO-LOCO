@@ -51,8 +51,8 @@ class Character extends MovableObject {
                 this.world.camera_x = -this.x + 100;
             }
 
-            if ( this.world.keyboard.SPACE && !this.isAboveGround()) {
-                this.speedY() = 20;
+            if (this.world && this.world.keyboard.SPACE && !this.isAboveGround()) {
+                this.speedY = 25;
             }
 
         }, 1000 / 60);
