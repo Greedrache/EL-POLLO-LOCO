@@ -3,7 +3,7 @@ let world;
 
 function init() {
 
-    canvas = document.querySelector("canvas");
+    canvas = document.getElementById("Canvas");
     world = new World(canvas);
 
 
