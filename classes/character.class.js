@@ -25,7 +25,7 @@ class Character extends MovableObject {
     animate() {
         setInterval(() => {
 
-            if (this.world.keyboard.RIGHT) {
+            if (this.world && this.world.keyboard.RIGHT) {
              
 
                 if (this.currentImage >= this.IMAGES_WALKING.length) {

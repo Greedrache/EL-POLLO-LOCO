@@ -5,13 +5,13 @@ let keyboard = new Keyboard();
 function init() {
 
     canvas = document.getElementById("Canvas");
-    world = new World(canvas);
+    world = new World(canvas, keyboard);
 
 
 }
 
 
-window.addEventListener("onkeydown", (event) => {
+window.addEventListener("keydown", (event) => {
     if (event.key == "ArrowRight") {
         keyboard.RIGHT = true;
     }
@@ -38,7 +38,7 @@ window.addEventListener("onkeydown", (event) => {
     }
 });
 
-window.addEventListener("onkeyup", (event) => {
+window.addEventListener("keyup", (event) => {
     if (event.key == "ArrowRight") {
         keyboard.RIGHT = false;
     }
