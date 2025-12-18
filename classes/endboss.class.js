@@ -37,6 +37,9 @@ class Endboss extends MovableObject {
     ];
 
     isHurt = false;
+    isDead = false;
+    hitCount = 0;
+    deadAnimationPlayed = false;
 
     constructor() {
         super();
@@ -53,7 +56,15 @@ class Endboss extends MovableObject {
 
     animate() {
         setInterval(() => {
-            if (this.isHurt) {
+            if (this.isDead) {
+                if (!this.deadAnimationPlayed) {
+                    this.playAnimation(this.IMAGES_DEAD);
+                    if (this.currentImage >= this.IMAGES_DEAD.length) {
+                        this.deadAnimationPlayed = true;
+                        this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
+                    }
+                }
+            } else if (this.isHurt) {
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.isAlerted) {
                 this.playAnimation(this.IMAGES_ALERT);
@@ -72,11 +83,17 @@ class Endboss extends MovableObject {
     }
 
     hit() {
+        if (this.isDead) return;
         this.isHurt = true;
-        this.energy -= 20;
-        setTimeout(() => {
-            this.isHurt = false;
-        }, 500);
+        this.hitCount++;
+        if (this.hitCount >= 3) {
+            this.isDead = true;
+            this.endboss_music.pause();
+        } else {
+            setTimeout(() => {
+                this.isHurt = false;
+            }, 500);
+        }
     }
 }
     
