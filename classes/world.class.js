@@ -60,6 +60,12 @@ class World {
                 if (this.character.x > enemy.x - 500) {
                     enemy.alert();
                 }
+                // Attack wenn Spieler sehr nah ist
+                if (this.character.x > enemy.x - 200 && enemy.isAlerted) {
+                    enemy.attack();
+                } else {
+                    enemy.stopAttack();
+                }
             }
         });
     }

@@ -17,6 +17,17 @@ class Endboss extends MovableObject {
         "img/4_enemie_boss_chicken/2_alert/G12.png",
     ];
 
+    IMAGES_ATTACK = [
+        "img/4_enemie_boss_chicken/3_attack/G13.png",
+        "img/4_enemie_boss_chicken/3_attack/G14.png",
+        "img/4_enemie_boss_chicken/3_attack/G15.png",
+        "img/4_enemie_boss_chicken/3_attack/G16.png",
+        "img/4_enemie_boss_chicken/3_attack/G17.png",
+        "img/4_enemie_boss_chicken/3_attack/G18.png",
+        "img/4_enemie_boss_chicken/3_attack/G19.png",
+        "img/4_enemie_boss_chicken/3_attack/G20.png",
+    ];
+
     IMAGES_WALKING = [
         "img/4_enemie_boss_chicken/1_walk/G1.png",
         "img/4_enemie_boss_chicken/1_walk/G2.png",
@@ -38,6 +49,7 @@ class Endboss extends MovableObject {
 
     isHurt = false;
     isDead = false;
+    isAttacking = false;
     hitCount = 0;
     deadAnimationPlayed = false;
 
@@ -45,6 +57,7 @@ class Endboss extends MovableObject {
         super();
         this.loadImage(this.IMAGES_ALERT[0]);
         this.loadImages(this.IMAGES_ALERT);
+        this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
@@ -66,6 +79,8 @@ class Endboss extends MovableObject {
                 }
             } else if (this.isHurt) {
                 this.playAnimation(this.IMAGES_HURT);
+            } else if (this.isAttacking) {
+                this.playAnimation(this.IMAGES_ATTACK);
             } else if (this.isAlerted) {
                 this.playAnimation(this.IMAGES_ALERT);
             } else {
@@ -83,6 +98,16 @@ class Endboss extends MovableObject {
                 backgroundMusic.pause();
             }
         }
+    }
+
+    attack() {
+        if (!this.isDead && !this.isHurt && this.isAlerted) {
+            this.isAttacking = true;
+        }
+    }
+
+    stopAttack() {
+        this.isAttacking = false;
     }
 
     hit() {
