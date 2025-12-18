@@ -9,6 +9,8 @@ class World {
     keyboard;
     camera_x = 0;
     statusbar = new Statusbar();
+    statusbarBottle = new StatusbarBottle();
+    statusbarCoin = new StatusbarCoin();
     throwableObjects = [];
 
     constructor(canvas, keyboard) {
@@ -48,14 +50,17 @@ class World {
         this.ctx.translate(this.camera_x, 0); 
 
         this.addObjecttoMap(this.level.backgroundObject);
-
-        this.ctx.translate(-this.camera_x, 0); 
-        this.addtoMap(this.statusbar); // spave für fixed objects
-        this.ctx.translate(this.camera_x, 0); 
-
+        
         this.addObjecttoMap(this.level.clouds);
         this.addObjecttoMap(this.level.enemies);
         this.addtoMap(this.character);
+
+        this.ctx.translate(-this.camera_x, 0); 
+        this.addtoMap(this.statusbar);
+        this.addtoMap(this.statusbarBottle);
+        this.addtoMap(this.statusbarCoin);
+        this.ctx.translate(this.camera_x, 0); 
+
         this.addObjecttoMap(this.throwableObjects);
 
         this.ctx.translate(-this.camera_x, 0); // Kamera zurücksetzen

@@ -13,17 +13,17 @@ class StatusbarBottle extends DrawableObject {
 
     constructor() {
         super();
-        this.loadImages(this.IMAGES_STATUSBAR);
+        this.loadImages(this.IMAGES_STATUSBAR_BOTTLE);
         this.x = 20;
-        this.y = 20; // keine ahung welche zahl hier hin muss
+        this.y = 50;
         this.width = 200;
         this.height = 60;
         this.setPercentage(100);
     }
 
-        setPercentage(percentage) {
+    setPercentage(percentage) {
         this.percentage = percentage;
-        let path = this.IMAGES_STATUSBAR[this.resolveImageIndex()];
+        let path = this.IMAGES_STATUSBAR_BOTTLE[this.resolveImageIndex()];
         this.img = this.imageCache[path];
 
 
