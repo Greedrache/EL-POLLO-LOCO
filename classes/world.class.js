@@ -22,6 +22,18 @@ class World {
         this.character.keyboard = this.keyboard;
     }
 
+    checkCollisions() {
+        setInterval(() => {
+            this.level.enemies.forEach((enemy) => {
+                if (this.character.isColliding(enemy)) {
+                    this.character.hit(); 
+                    console.log('Character energy: ' + this.character.energy);
+                      
+                }
+            });
+        }, 100);
+    }
+
     draw() {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
@@ -47,14 +59,24 @@ class World {
 
     addtoMap(mo) {
         if (mo.otherDirection) {
-            this.ctx.save();
-            this.ctx.translate(mo.x + mo.width / 2, 0);
-            this.ctx.scale(-1, 1);
-            this.ctx.translate(-(mo.x + mo.width / 2), 0);
+            this.spinImage(mo);
         }
-        this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+        mo.draw(this.ctx);
+        mo.drawFrame(this.ctx); 
+        
         if (mo.otherDirection) {
-            this.ctx.restore();
+            this.spinImageBack(mo);
         }
+    }
+
+    spinImage(mo) {
+        this.ctx.save();
+        this.ctx.translate(mo.x + mo.width / 2, 0);
+        this.ctx.scale(-1, 1);
+        this.ctx.translate(-(mo.x + mo.width / 2), 0);
+    }
+
+    spinImageBack(mo) {
+        this.ctx.restore();
     }
 }

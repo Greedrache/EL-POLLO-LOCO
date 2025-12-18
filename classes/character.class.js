@@ -24,13 +24,23 @@ class Character extends MovableObject {
         "img/2_character_pepe/3_jump/J-38.png",
         "img/2_character_pepe/3_jump/J-39.png",
     ];
+
+    IMAGES_DEAD = [
+        "img/2_character_pepe/4_dead/D-41.png",
+        "img/2_character_pepe/4_dead/D-42.png",
+        "img/2_character_pepe/4_dead/D-43.png",
+        "img/2_character_pepe/4_dead/D-44.png",
+        "img/2_character_pepe/4_dead/D-45.png"
+    ];
     world;
+    walking_sound = new Audio('audio/walking.mp3');
 
     constructor() {
         super();
         this.loadImage("img/2_character_pepe/2_walk/W-21.png");
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
+        this.loadImages(this.IMAGES_DEAD);
         this.applyGravity();
         this.animate();
     }
@@ -57,7 +67,11 @@ class Character extends MovableObject {
 
 
         setInterval(() => {
-            if (this.isAboveGround()) {
+            if(this.isDead()) {
+                this.playAnimation(this.IMAGES_DEAD);
+            }
+
+            else if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
             } else {
 
