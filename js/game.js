@@ -75,7 +75,7 @@ window.addEventListener("keyup", (event) => {
 // 5. Endboss besiegen
 // 6. Game Over Screen
 // 7. Fullscreen toggle
-// 8. Sound einbauen
+// 8. Sound einbauen                   // so gut wie fertig
 // 9. Startbildschirm
 
 
