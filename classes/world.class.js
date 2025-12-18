@@ -12,6 +12,8 @@ class World {
     statusbarBottle = new StatusbarBottle();
     statusbarCoin = new StatusbarCoin();
     throwableObjects = [];
+    gameOverScreen = new GameOverScreen();
+    gameOver = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext("2d");
@@ -81,6 +83,10 @@ class World {
 
         this.ctx.translate(-this.camera_x, 0); // Kamera zurücksetzen
 
+        if (this.character.isDead()) {
+            this.gameOver = true;
+            this.addtoMap(this.gameOverScreen);
+        }
 
         requestAnimationFrame(() => this.draw()); // Je besser die Grafikkarte, desto höher die fps
 
