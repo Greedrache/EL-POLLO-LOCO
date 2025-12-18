@@ -1,13 +1,15 @@
 class World {
     character = new Character();
     enemies = level1.enemies;
-    clouds =  level1.clouds;
+    clouds = level1.clouds;
     backgroundObject = level1.backgroundObject;
     level = level1;
     canvas;
     ctx;
     keyboard;
     camera_x = 0;
+    statusbar = new Statusbar();
+    throwableObjects = [new ThrowableObject()];
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext("2d");
@@ -27,9 +29,8 @@ class World {
         setInterval(() => {
             this.level.enemies.forEach((enemy) => {
                 if (this.character.isColliding(enemy)) {
-                    this.character.hit(); 
-                    console.log('Character energy: ' + this.character.energy);
-                      
+                    this.character.hit();
+                    this.statusbar.setPercentage(this.character.energy);
                 }
             });
         }, 100);
@@ -38,12 +39,18 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-        this.ctx.translate(this.camera_x, 0); // Kamera bewegen
+        this.ctx.translate(this.camera_x, 0); 
 
         this.addObjecttoMap(this.level.backgroundObject);
+
+        this.ctx.translate(-this.camera_x, 0); 
+        this.addtoMap(this.statusbar); // spave für fixed objects
+        this.ctx.translate(this.camera_x, 0); 
+
         this.addObjecttoMap(this.level.clouds);
         this.addtoMap(this.character);
         this.addObjecttoMap(this.level.enemies);
+        this.addObjecttoMap(this.throwableObjects);
 
         this.ctx.translate(-this.camera_x, 0); // Kamera zurücksetzen
 
@@ -63,8 +70,8 @@ class World {
             this.spinImage(mo);
         }
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx); 
-        
+        mo.drawFrame(this.ctx);
+
         if (mo.otherDirection) {
             this.spinImageBack(mo);
         }
