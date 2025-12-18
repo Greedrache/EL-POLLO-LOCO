@@ -39,7 +39,18 @@ class World {
             this.checkClouds();
             this.checkBottleCollisions();
             this.checkThrowableCollisions();
+            this.checkEndbossAlert();
         }, 200);
+    }
+
+    checkEndbossAlert() {
+        this.level.enemies.forEach((enemy) => {
+            if (enemy instanceof Endboss) {
+                if (this.character.x > enemy.x - 500) {
+                    enemy.alert();
+                }
+            }
+        });
     }
 
     checkClouds() {
