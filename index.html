@@ -16,6 +16,18 @@
         <canvas id="Canvas" width="720px" height="480px"> </canvas>
         <button id="start-btn" onclick="startGame()">START</button>
         <button id="fullscreen-btn" onclick="toggleFullscreen()">⛶</button>
+
+        <!-- Mobile Controls -->
+        <div id="mobile-controls">
+            <div class="mobile-left">
+                <button class="mobile-btn" id="btn-left">&#60;</button>
+                <button class="mobile-btn" id="btn-right">&#62;</button>
+            </div>
+            <div class="mobile-right">
+                <button class="mobile-btn" id="btn-jump">&#8679;</button>
+                <button class="mobile-btn" id="btn-throw">&#128165;</button>
+            </div>
+        </div>
     </div>
 
     <script src="classes/drawable-object.class.js"></script>

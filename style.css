@@ -1,3 +1,44 @@
+    /* Mobile Controls */
+    #mobile-controls {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        pointer-events: none;
+        z-index: 20;
+    }
+    .mobile-left, .mobile-right {
+        display: flex;
+        gap: 10px;
+        pointer-events: auto;
+    }
+    .mobile-left {
+        margin-left: 10px;
+    }
+    .mobile-right {
+        margin-right: 10px;
+    }
+    .mobile-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 32px;
+        border-radius: 50%;
+        border: none;
+        background: #ffcb19;
+        color: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        cursor: pointer;
+        opacity: 0.85;
+        transition: background 0.2s;
+    }
+    .mobile-btn:active {
+        background: #ebb916;
+    }
+    @media (min-width: 900px) {
+        #mobile-controls { display: none; }
+    }
     @font-face {
         font-family: 'zebars';
         src: url('fonts/Zabars.ttf') format('truetype');

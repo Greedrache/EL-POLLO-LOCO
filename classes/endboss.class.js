@@ -68,6 +68,22 @@ class Endboss extends MovableObject {
         this.endboss_music.volume = 0.5;
         this.animate();
         this.startMovement();
+        this.startChickenSpawn();
+    }
+
+    startChickenSpawn() {
+        let spawnChicken = () => {
+            if (this.isDead) return;
+            if (this.world && this.world.level && this.world.level.enemies && this.isAlerted) {
+                let chicken = new Chicken();
+                chicken.x = this.x - 100;
+                chicken.y = 365;
+                this.world.level.enemies.push(chicken);
+            }
+            let next = 2000 + Math.random() * 2000;
+            this._chickenSpawnTimeout = setTimeout(spawnChicken, next);
+        };
+        spawnChicken();
     }
 
     startMovement() {
@@ -141,6 +157,7 @@ class Endboss extends MovableObject {
         if (this.hitCount >= 3) {
             this.isDead = true;
             this.endboss_music.pause();
+            if (this._chickenSpawnTimeout) clearTimeout(this._chickenSpawnTimeout);
         } else {
             setTimeout(() => {
                 this.isHurt = false;

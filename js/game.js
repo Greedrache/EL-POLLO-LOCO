@@ -12,6 +12,22 @@ function init() {
     drawStartScreen();
     backgroundMusic.loop = true;
     backgroundMusic.volume = 1;
+
+    // Mobile Controls
+    let btnLeft = document.getElementById('btn-left');
+    let btnRight = document.getElementById('btn-right');
+    let btnJump = document.getElementById('btn-jump');
+    let btnThrow = document.getElementById('btn-throw');
+    if (btnLeft && btnRight && btnJump && btnThrow) {
+        btnLeft.addEventListener('touchstart', () => { keyboard.LEFT = true; });
+        btnLeft.addEventListener('touchend', () => { keyboard.LEFT = false; });
+        btnRight.addEventListener('touchstart', () => { keyboard.RIGHT = true; });
+        btnRight.addEventListener('touchend', () => { keyboard.RIGHT = false; });
+        btnJump.addEventListener('touchstart', () => { keyboard.SPACE = true; });
+        btnJump.addEventListener('touchend', () => { keyboard.SPACE = false; });
+        btnThrow.addEventListener('touchstart', () => { keyboard.THROW = true; });
+        btnThrow.addEventListener('touchend', () => { keyboard.THROW = false; });
+    }
 }
 
 function drawStartScreen() {
