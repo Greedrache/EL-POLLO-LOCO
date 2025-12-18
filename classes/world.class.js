@@ -20,11 +20,17 @@ class World {
     collectedBottles = 0;
     collectedCoins = 0;
     bottle_collect_sound = new Audio('audio/bottle-collect.mp3');
-    coin_collect_sound = new Audio('audio/bottle-collect.mp3');
+    coin_collect_sound = new Audio('audio/collectcoin.wav');
+    throw_bottle_sound = new Audio('audio/trowbottle.mp3');
+    game_won_sound = new Audio('audio/youwon.mp3');
+    game_lost_sound = new Audio('audio/gamelost.mp3');
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext("2d");
         this.canvas = canvas;
+        this.keyboard = keyboard;
+        this.game_won_sound.volume = 0.5;
+        this.game_lost_sound.volume = 0.5;
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
@@ -65,6 +71,7 @@ class World {
                     this.gameWon = true;
                     this.gameWinScreen.showWinScreen();
                     enemy.endboss_music.pause();
+                    this.game_won_sound.play();
                     setTimeout(() => {
                         showReplayScreen();
                     }, 3000);
@@ -97,6 +104,7 @@ class World {
             this.throwableObjects.push(throwableObject);
             this.collectedBottles--;
             this.statusbarBottle.setPercentage(this.collectedBottles * 20);
+            this.throw_bottle_sound.play();
             this.keyboard.THROW = false;
         }
     }
@@ -127,6 +135,7 @@ class World {
         if (this.character.isDead() && !this.gameOver) {
             this.gameOver = true;
             this.addtoMap(this.gameOverScreen);
+            this.game_lost_sound.play();
             setTimeout(() => {
                 showReplayScreen();
             }, 3000);

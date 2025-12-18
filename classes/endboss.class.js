@@ -68,6 +68,9 @@ class Endboss extends MovableObject {
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.isAlerted) {
                 this.playAnimation(this.IMAGES_ALERT);
+            } else {
+                // Standby - zeige erstes Bild
+                this.loadImage(this.IMAGES_ALERT[0]);
             }
         }, 200);
     }
