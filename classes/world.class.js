@@ -31,7 +31,23 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
+            this.checkClouds();
         }, 200);
+    }
+
+    checkClouds() {
+        let cameraRight = -this.camera_x + 720;
+        let cameraLeft = -this.camera_x;
+        
+        this.level.clouds.forEach((cloud) => {
+            // Wenn Wolke links aus dem Bild verschwindet, rechts neu spawnen
+            if (cloud.x + cloud.width < cameraLeft - 100) {
+                cloud.x = cameraRight + Math.random() * 300;
+                cloud.y = 20 + Math.random() * 50;
+                let randomImage = cloud.IMAGES_CLOUDS[Math.floor(Math.random() * 2)];
+                cloud.loadImage(randomImage);
+            }
+        });
     }
 
     checkThrowObjects() {
