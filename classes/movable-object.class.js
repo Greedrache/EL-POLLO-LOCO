@@ -7,7 +7,11 @@ class MovableObject extends DrawableObject {
     lastHit = 0;
 
     isAboveGround() {
-        return this.y < 180;
+        if (!(this instanceof ThrowableObject)) {
+            return true;
+        } else {
+            return this.y < 180;
+        }
     }
 
     applyGravity() {
@@ -26,7 +30,7 @@ class MovableObject extends DrawableObject {
             this.y < mo.y + mo.height;
     }
 
-     hit() {
+    hit() {
         this.energy -= 5;
         if (this.energy < 0) {
             this.energy = 0;
