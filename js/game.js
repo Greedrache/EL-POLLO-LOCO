@@ -3,11 +3,14 @@ let world;
 let keyboard = new Keyboard();
 let gameStarted = false;
 let startScreen;
+let backgroundMusic = new Audio('audio/backround-musik.mp3');
 
 function init() {
     canvas = document.getElementById("Canvas");
     startScreen = new StartScreen();
     drawStartScreen();
+    backgroundMusic.loop = true;
+    backgroundMusic.volume = 1;
 }
 
 function drawStartScreen() {
@@ -25,6 +28,7 @@ function startGame() {
         gameStarted = true;
         document.getElementById('start-btn').style.display = 'none';
         world = new World(canvas, keyboard);
+        backgroundMusic.play();
     }
 }
 
@@ -87,8 +91,8 @@ window.addEventListener("keyup", (event) => {
 
 // AUfgaben 
 // 1. Coins einsammeln
-// 2. Flaschen einsammeln
-// 3. Flaschen nur werfen, wenn welche da sind
+// 2. Flaschen einsammeln // fertig
+// 3. Flaschen nur werfen, wenn welche da sind // fertig
 // 4. Collision
 // 5. Endboss besiegen
 // 6. Game Over Screen                // fertig
