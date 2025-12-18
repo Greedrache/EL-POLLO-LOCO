@@ -42,6 +42,9 @@ class Character extends MovableObject {
     ];
     world;
     walking_sound = new Audio('audio/walking.mp3');
+    jump_sound = new Audio('audio/jump .mp3');
+    hurt_sound = new Audio('audio/characterbecomedamage.mp3');
+    dead_sound = new Audio('audio/sterben .mp3');
 
     constructor() {
         super();
@@ -78,9 +81,11 @@ class Character extends MovableObject {
         setInterval(() => {
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
+                this.dead_sound.play();
             }
             else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
+                this.hurt_sound.play();
             }
 
             else if (this.isAboveGround()) {
@@ -97,5 +102,6 @@ class Character extends MovableObject {
 
     jump() {
         this.speedY = 30;
+        this.jump_sound.play();
     }
 }

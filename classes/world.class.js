@@ -33,7 +33,7 @@ class World {
     }
 
     checkThrowObjects() {
-        if (this.keyboard.D) {
+        if (this.keyboard.THROW) {
             let throwableObject = new ThrowableObject(
                 this.character.x + 100,
                 this.character.y + 100

@@ -37,8 +37,8 @@ window.addEventListener("keydown", (event) => {
         keyboard.SPACE = true;
     }
 
-    if (event.code == "KeyD") {
-        keyboard.D = true;
+    if (event.code == "KeyS" || event.key == "ArrowDown" || event.keyCode == 40) {
+        keyboard.THROW = true;
     }
 });
 
@@ -60,8 +60,8 @@ window.addEventListener("keyup", (event) => {
         keyboard.SPACE = false;
     }
 
-    if (event.code === "KeyD") {
-        keyboard.D = false;
+    if (event.code === "KeyS" || event.code === "ArrowDown") {
+        keyboard.THROW = false;
     }
 });
 
