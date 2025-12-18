@@ -16,6 +16,7 @@ class World {
     gameOverScreen = new GameOverScreen();
     gameOver = false;
     collectedBottles = 0;
+    bottle_collect_sound = new Audio('audio/bottle-collect.mp3');
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext("2d");
@@ -152,6 +153,7 @@ class World {
                 this.collectedBottles++;
                 if (this.collectedBottles > 5) this.collectedBottles = 5;
                 this.statusbarBottle.setPercentage(this.collectedBottles * 20);
+                this.bottle_collect_sound.play();
             }
         });
     }
