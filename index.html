@@ -11,6 +11,14 @@
 
 <body onload="init()">
     <h1>El Pollo Loco</h1>
+    <script>
+    // Kontextmenü auf allen Buttons verhindern
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('contextmenu', e => e.preventDefault());
+        });
+    });
+    </script>
 
     <div id="game-container">
         <canvas id="Canvas" width="720px" height="480px"> </canvas>
