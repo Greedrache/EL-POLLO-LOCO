@@ -38,6 +38,7 @@ class World {
             this.checkThrowObjects();
             this.checkClouds();
             this.checkBottleCollisions();
+            this.checkThrowableCollisions();
         }, 200);
     }
 
@@ -160,6 +161,28 @@ class World {
                 this.statusbarBottle.setPercentage(this.collectedBottles * 20);
                 this.bottle_collect_sound.play();
             }
+        });
+    }
+
+    checkThrowableCollisions() {
+        this.throwableObjects.forEach((bottle, bottleIndex) => {
+            // Check if bottle hits ground
+            if (bottle.hasHitGround() && !bottle.isSplashing) {
+                bottle.splash();
+                setTimeout(() => {
+                    this.throwableObjects.splice(bottleIndex, 1);
+                }, 500);
+            }
+            // Check if bottle hits endboss
+            this.level.enemies.forEach((enemy) => {
+                if (enemy instanceof Endboss && bottle.isColliding(enemy) && !bottle.isSplashing) {
+                    bottle.splash();
+                    enemy.hit();
+                    setTimeout(() => {
+                        this.throwableObjects.splice(bottleIndex, 1);
+                    }, 500);
+                }
+            });
         });
     }
 }

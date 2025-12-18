@@ -8,7 +8,8 @@ class MovableObject extends DrawableObject {
 
     isAboveGround() {
         if (this instanceof ThrowableObject) {
-            return true;  // Throwable objects fallen immer (für die Wurfparabel)
+            if (this.isSplashing) return false;  // Stop gravity when splashing
+            return this.y < 350;  // Boden für Flaschen
         } else {
             return this.y < 180;  // Character stoppt bei y = 180 (Boden)
         }
