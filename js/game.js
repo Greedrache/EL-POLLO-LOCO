@@ -45,6 +45,17 @@ function showReplayScreen() {
     btn.style.display = 'block';
 }
 
+function toggleFullscreen() {
+    let gameContainer = document.getElementById('game-container');
+    if (!document.fullscreenElement) {
+        gameContainer.requestFullscreen().catch(err => {
+            console.log('Fullscreen error:', err);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+}
+
 
 window.addEventListener("keydown", (event) => {
     if (event.code == "KeyD" || event.key == "ArrowRight") {
