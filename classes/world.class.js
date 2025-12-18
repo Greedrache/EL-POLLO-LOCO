@@ -28,9 +28,9 @@ class World {
         this.ctx.translate(this.camera_x, 0); // Kamera bewegen
 
         this.addObjecttoMap(this.level.backgroundObject);
+        this.addObjecttoMap(this.level.clouds);
         this.addtoMap(this.character);
         this.addObjecttoMap(this.level.enemies);
-        this.addObjecttoMap(this.level.clouds);
 
         this.ctx.translate(-this.camera_x, 0); // Kamera zurücksetzen
 
