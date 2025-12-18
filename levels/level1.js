@@ -43,6 +43,13 @@ const level1 = new Level(
     new BackgroundObject("img/5_background/layers/2_second_layer/1.png", 720 * 4),
     new BackgroundObject("img/5_background/layers/1_first_layer/1.png", 720 * 4),
 
+    ],
+    [
+        new Bottle(300),
+        new Bottle(600),
+        new Bottle(900),
+        new Bottle(1300),
+        new Bottle(1700),
+        new Bottle(2000)
     ]
-
 );

@@ -91,10 +91,10 @@ window.addEventListener("keyup", (event) => {
 // 3. Flaschen nur werfen, wenn welche da sind
 // 4. Collision
 // 5. Endboss besiegen
-// 6. Game Over Screen // fertig
+// 6. Game Over Screen                // fertig
 // 7. Fullscreen toggle
 // 8. Sound einbauen                   // so gut wie fertig, schlaf sound fehlt und endboss sound
-// 9. Startbildschirm
+// 9. Startbildschirm                  // fertig auch mit play button
 
 
 // Endboss sound, springen, 

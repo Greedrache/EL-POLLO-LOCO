@@ -3,6 +3,7 @@ class World {
     enemies = level1.enemies;
     clouds = level1.clouds;
     backgroundObject = level1.backgroundObject;
+    bottles = level1.bottles;
     level = level1;
     canvas;
     ctx;
@@ -14,6 +15,7 @@ class World {
     throwableObjects = [];
     gameOverScreen = new GameOverScreen();
     gameOver = false;
+    collectedBottles = 0;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext("2d");
@@ -34,6 +36,7 @@ class World {
             this.checkCollisions();
             this.checkThrowObjects();
             this.checkClouds();
+            this.checkBottleCollisions();
         }, 200);
     }
 
@@ -53,12 +56,15 @@ class World {
     }
 
     checkThrowObjects() {
-        if (this.keyboard.THROW) {
+        if (this.keyboard.THROW && this.collectedBottles > 0) {
             let throwableObject = new ThrowableObject(
                 this.character.x + 100,
                 this.character.y + 100
             );
             this.throwableObjects.push(throwableObject);
+            this.collectedBottles--;
+            this.statusbarBottle.setPercentage(this.collectedBottles * 20);
+            this.keyboard.THROW = false;
         }
     }
 
@@ -70,6 +76,7 @@ class World {
         this.addObjecttoMap(this.level.backgroundObject);
         
         this.addObjecttoMap(this.level.clouds);
+        this.addObjecttoMap(this.level.bottles);
         this.addObjecttoMap(this.level.enemies);
         this.addtoMap(this.character);
 
@@ -136,5 +143,16 @@ class World {
                 }
             }
         });
-    }   
+    }
+
+    checkBottleCollisions() {
+        this.level.bottles.forEach((bottle, index) => {
+            if (this.character.isColliding(bottle)) {
+                this.level.bottles.splice(index, 1);
+                this.collectedBottles++;
+                if (this.collectedBottles > 5) this.collectedBottles = 5;
+                this.statusbarBottle.setPercentage(this.collectedBottles * 20);
+            }
+        });
+    }
 }
