@@ -7,10 +7,10 @@ class MovableObject extends DrawableObject {
     lastHit = 0;
 
     isAboveGround() {
-        if (!(this instanceof ThrowableObject)) {
-            return true;
+        if (this instanceof ThrowableObject) {
+            return true;  // Throwable objects fallen immer (für die Wurfparabel)
         } else {
-            return this.y < 180;
+            return this.y < 180;  // Character stoppt bei y = 180 (Boden)
         }
     }
 

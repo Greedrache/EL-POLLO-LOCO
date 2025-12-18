@@ -64,3 +64,19 @@ window.addEventListener("keyup", (event) => {
         keyboard.D = false;
     }
 });
+
+
+
+// AUfgaben 
+// 1. Coins einsammeln
+// 2. Flaschen einsammeln
+// 3. Flaschen nur werfen, wenn welche da sind
+// 4. Collision
+// 5. Endboss besiegen
+// 6. Game Over Screen
+// 7. Fullscreen toggle
+// 8. Sound einbauen
+// 9. Startbildschirm
+
+
+// Endboss sound, springen, 
