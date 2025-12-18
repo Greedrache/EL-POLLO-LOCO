@@ -91,8 +91,13 @@ class World {
 
         this.ctx.translate(-this.camera_x, 0); // Kamera zurücksetzen
 
-        if (this.character.isDead()) {
+        if (this.character.isDead() && !this.gameOver) {
             this.gameOver = true;
+            this.addtoMap(this.gameOverScreen);
+            setTimeout(() => {
+                showReplayScreen();
+            }, 3000);
+        } else if (this.gameOver) {
             this.addtoMap(this.gameOverScreen);
         }
 

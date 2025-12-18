@@ -27,9 +27,22 @@ function startGame() {
     if (!gameStarted) {
         gameStarted = true;
         document.getElementById('start-btn').style.display = 'none';
+        initLevel();
         world = new World(canvas, keyboard);
         backgroundMusic.play();
     }
+}
+
+function showReplayScreen() {
+    backgroundMusic.pause();
+    backgroundMusic.currentTime = 0;
+    gameStarted = false;
+    world = null;
+    startScreen = new StartScreen();
+    drawStartScreen();
+    let btn = document.getElementById('start-btn');
+    btn.innerText = 'REPLAY';
+    btn.style.display = 'block';
 }
 
 
