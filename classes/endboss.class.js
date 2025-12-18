@@ -76,9 +76,10 @@ class Endboss extends MovableObject {
             if (this.isDead) return;
             if (this.world && this.world.level && this.world.level.enemies && this.isAlerted) {
                 let chicken = new Chicken();
-                chicken.x = this.x - 100;
+                chicken.x = this.x - 50 - Math.random() * 200;
                 chicken.y = 365;
                 chicken.speed = 8; // Schnelle Chickens
+                chicken.isEndbossChicken = true; // Markierung für Instant-Kill
                 this.world.level.enemies.push(chicken);
             }
             let next = 2000 + Math.random() * 0.0001;

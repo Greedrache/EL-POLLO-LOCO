@@ -208,6 +208,10 @@ class World {
                 if (enemy instanceof Endboss && !enemy.isDead) {
                     this.character.energy = 0;
                     this.statusbar.setPercentage(0);
+                } else if (enemy.isEndbossChicken && !enemy.chickenDead) {
+                    // Endboss-Chicken = Instant-Kill
+                    this.character.energy = 0;
+                    this.statusbar.setPercentage(0);
                 } else if (this.character.isAboveGround() && this.character.speedY < 0 && !enemy.chickenDead) {
                     enemy.die();
                     this.character.speedY = 15;
