@@ -43,7 +43,7 @@ class World {
     }
 
     run() {
-        setInterval(() => {
+        let intervalId = setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
             this.checkClouds();
@@ -52,6 +52,7 @@ class World {
             this.checkThrowableCollisions();
             this.checkEndbossAlert();
         }, 200);
+        gameIntervals.push(intervalId);
     }
 
     checkEndbossAlert() {
@@ -142,6 +143,12 @@ class World {
             this.gameOver = true;
             this.addtoMap(this.gameOverScreen);
             this.game_lost_sound.play();
+            // Stoppe Endboss Musik
+            this.level.enemies.forEach((enemy) => {
+                if (enemy instanceof Endboss) {
+                    enemy.endboss_music.pause();
+                }
+            });
             setTimeout(() => {
                 showReplayScreen();
             }, 3000);
@@ -191,7 +198,11 @@ class World {
     checkCollisions() {
         this.level.enemies.forEach((enemy, index) => {
             if (this.character.isColliding(enemy)) {
-                if (this.character.isAboveGround() && this.character.speedY < 0 && !enemy.chickenDead) {
+                // Endboss Kollision = sofortiger Tod
+                if (enemy instanceof Endboss && !enemy.isDead) {
+                    this.character.energy = 0;
+                    this.statusbar.setPercentage(0);
+                } else if (this.character.isAboveGround() && this.character.speedY < 0 && !enemy.chickenDead) {
                     enemy.die();
                     this.character.speedY = 15;
                     setTimeout(() => {

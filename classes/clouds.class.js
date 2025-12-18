@@ -22,9 +22,10 @@ class Cloud extends MovableObject {
 
 
     animate() {
-        setInterval(() => {
+        let moveInterval = setInterval(() => {
             this.x -= this.speed;
         }, 1000 / 60);
+        gameIntervals.push(moveInterval);
     }
 
     

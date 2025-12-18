@@ -4,6 +4,7 @@ let keyboard = new Keyboard();
 let gameStarted = false;
 let startScreen;
 let backgroundMusic = new Audio('audio/backround-musik.mp3');
+let gameIntervals = [];
 
 function init() {
     canvas = document.getElementById("Canvas");
@@ -34,6 +35,9 @@ function startGame() {
 }
 
 function showReplayScreen() {
+    // Stoppe alle Intervalle
+    gameIntervals.forEach(id => clearInterval(id));
+    gameIntervals = [];
     backgroundMusic.pause();
     backgroundMusic.currentTime = 0;
     gameStarted = false;

@@ -50,8 +50,10 @@ class Endboss extends MovableObject {
     isHurt = false;
     isDead = false;
     isAttacking = false;
+    isWalking = false;
     hitCount = 0;
     deadAnimationPlayed = false;
+    speed = 2;
 
     constructor() {
         super();
@@ -65,10 +67,29 @@ class Endboss extends MovableObject {
         this.endboss_music.loop = true;
         this.endboss_music.volume = 0.5;
         this.animate();
+        this.startMovement();
+    }
+
+    startMovement() {
+        // Zufällig laufen und stoppen
+        let walkInterval = setInterval(() => {
+            if (this.isAlerted && !this.isDead && !this.isHurt) {
+                this.isWalking = Math.random() > 0.3; // 70% Chance zu laufen
+            }
+        }, 1000);
+        gameIntervals.push(walkInterval);
+
+        // Bewegung nach links
+        let moveInterval = setInterval(() => {
+            if (this.isWalking && this.isAlerted && !this.isDead) {
+                this.x -= this.speed;
+            }
+        }, 1000 / 60);
+        gameIntervals.push(moveInterval);
     }
 
     animate() {
-        setInterval(() => {
+        let animInterval = setInterval(() => {
             if (this.isDead) {
                 if (!this.deadAnimationPlayed) {
                     this.playAnimation(this.IMAGES_DEAD);
@@ -81,6 +102,8 @@ class Endboss extends MovableObject {
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.isAttacking) {
                 this.playAnimation(this.IMAGES_ATTACK);
+            } else if (this.isWalking && this.isAlerted) {
+                this.playAnimation(this.IMAGES_WALKING);
             } else if (this.isAlerted) {
                 this.playAnimation(this.IMAGES_ALERT);
             } else {
@@ -88,6 +111,7 @@ class Endboss extends MovableObject {
                 this.loadImage(this.IMAGES_ALERT[0]);
             }
         }, 200);
+        gameIntervals.push(animInterval);
     }
 
     alert() {

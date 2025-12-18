@@ -35,21 +35,23 @@ class ThrowableObject extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
+        let rotateInterval = setInterval(() => {
             if (!this.isSplashing) {
                 this.playAnimation(this.IMAGES_BOTTLE_ROTATE);
             }
         }, 50);
+        gameIntervals.push(rotateInterval);
     }
 
     trow() {
         this.speedY = 30;
         this.applyGravity();
-        setInterval(() => {
+        let throwInterval = setInterval(() => {
             if (!this.isSplashing) {
                 this.x += 10;
             }
         }, 25);
+        gameIntervals.push(throwInterval);
     }
 
     splash() {
@@ -63,6 +65,7 @@ class ThrowableObject extends MovableObject {
                     clearInterval(splashInterval);
                 }
             }, 80);
+            gameIntervals.push(splashInterval);
         }
     }
 

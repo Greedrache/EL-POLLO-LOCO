@@ -89,7 +89,7 @@ class Character extends MovableObject {
 
     animate() {
 
-        setInterval(() => {
+        let moveInterval = setInterval(() => {
             if (this.isDead()) return;
             
             if (this.world && this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
@@ -110,9 +110,10 @@ class Character extends MovableObject {
             }
 
         }, 1000 / 60);
+        gameIntervals.push(moveInterval);
 
 
-        setInterval(() => {
+        let animInterval = setInterval(() => {
             if (this.isDead()) {
                 if (!this.deadAnimationPlayed) {
                     this.playAnimation(this.IMAGES_DEAD);
@@ -140,12 +141,14 @@ class Character extends MovableObject {
                 }
             }
         }, 50);
+        gameIntervals.push(animInterval);
 
-        setInterval(() => {
+        let jumpInterval = setInterval(() => {
             if (this.isAboveGround() && !this.isDead() && !this.isHurt()) {
                 this.playAnimation(this.IMAGES_JUMPING);
             }
         }, 100);
+        gameIntervals.push(jumpInterval);
     }
 
     jump() {
