@@ -54,8 +54,8 @@ class World {
         this.ctx.translate(this.camera_x, 0); 
 
         this.addObjecttoMap(this.level.clouds);
-        this.addtoMap(this.character);
         this.addObjecttoMap(this.level.enemies);
+        this.addtoMap(this.character);
         this.addObjecttoMap(this.throwableObjects);
 
         this.ctx.translate(-this.camera_x, 0); // Kamera zurücksetzen
@@ -95,10 +95,18 @@ class World {
     }
 
     checkCollisions() {
-        this.level.enemies.forEach((enemy) => {
+        this.level.enemies.forEach((enemy, index) => {
             if (this.character.isColliding(enemy)) {
-                this.character.hit();
-                this.statusbar.setPercentage(this.character.energy);
+                if (this.character.isAboveGround() && this.character.speedY < 0 && !enemy.chickenDead) {
+                    enemy.die();
+                    this.character.speedY = 15;
+                    setTimeout(() => {
+                        this.level.enemies.splice(index, 1);
+                    }, 1000);
+                } else if (!enemy.chickenDead) {
+                    this.character.hit();
+                    this.statusbar.setPercentage(this.character.energy);
+                }
             }
         });
     }   
