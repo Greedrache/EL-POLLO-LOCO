@@ -55,18 +55,19 @@ class Character extends MovableObject {
     ];
 
     IMAGES_LONG_IDLE = [
-        "img/2_character_pepe/1_idle/long_idle/LI-11.png",
-        "img/2_character_pepe/1_idle/long_idle/LI-12.png",
-        "img/2_character_pepe/1_idle/long_idle/LI-13.png",
-        "img/2_character_pepe/1_idle/long_idle/LI-14.png",
-        "img/2_character_pepe/1_idle/long_idle/LI-15.png",
-        "img/2_character_pepe/1_idle/long_idle/LI-16.png",
-        "img/2_character_pepe/1_idle/long_idle/LI-17.png",
-        "img/2_character_pepe/1_idle/long_idle/LI-18.png",
-        "img/2_character_pepe/1_idle/long_idle/LI-19.png",
-        "img/2_character_pepe/1_idle/long_idle/LI-20.png"
+        "img/2_character_pepe/1_idle/long_idle/I-11.png",
+        "img/2_character_pepe/1_idle/long_idle/I-12.png",
+        "img/2_character_pepe/1_idle/long_idle/I-13.png",
+        "img/2_character_pepe/1_idle/long_idle/I-14.png",
+        "img/2_character_pepe/1_idle/long_idle/I-15.png",
+        "img/2_character_pepe/1_idle/long_idle/I-16.png",
+        "img/2_character_pepe/1_idle/long_idle/I-17.png",
+        "img/2_character_pepe/1_idle/long_idle/I-18.png",
+        "img/2_character_pepe/1_idle/long_idle/I-19.png",
+        "img/2_character_pepe/1_idle/long_idle/I-20.png"
     ];
     world;
+    lastActionTime = new Date().getTime();
     walking_sound = new Audio('audio/walking.mp3');
     jump_sound = new Audio('audio/jump .mp3');
     hurt_sound = new Audio('audio/characterbecomedamage.mp3');
@@ -90,10 +91,12 @@ class Character extends MovableObject {
         setInterval(() => {
             if (this.world && this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.moveRight();
+                this.lastActionTime = new Date().getTime();
             }
 
             if (this.world && this.world.keyboard.LEFT && this.x > 0) {
                 this.moveLeft();
+                this.lastActionTime = new Date().getTime();
             }
             if (this.world) {
                 this.world.camera_x = -this.x + 100;
@@ -115,21 +118,30 @@ class Character extends MovableObject {
                 this.playAnimation(this.IMAGES_HURT);
                 this.hurt_sound.play();
             }
-
-            else if (this.isAboveGround()) {
-                this.playAnimation(this.IMAGES_JUMPING);
-            } else {
-
-
+            else if (!this.isAboveGround()) {
                 if (this.world && (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) {
                     this.playAnimation(this.IMAGES_WALKING);
+                } else {
+                    let timeSinceLastAction = new Date().getTime() - this.lastActionTime;
+                    if (timeSinceLastAction > 60000) {
+                        this.playAnimation(this.IMAGES_LONG_IDLE);
+                    } else {
+                        this.playAnimation(this.IMAGES_IDLE);
+                    }
                 }
             }
         }, 50);
+
+        setInterval(() => {
+            if (this.isAboveGround() && !this.isDead() && !this.isHurt()) {
+                this.playAnimation(this.IMAGES_JUMPING);
+            }
+        }, 100);
     }
 
     jump() {
         this.speedY = 30;
         this.jump_sound.play();
+        this.lastActionTime = new Date().getTime();
     }
 }
