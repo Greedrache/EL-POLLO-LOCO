@@ -140,7 +140,7 @@ class Character extends MovableObject {
     }
 
     jump() {
-        this.speedY = 30;
+        this.speedY = 22;
         this.jump_sound.play();
         this.lastActionTime = new Date().getTime();
     }
