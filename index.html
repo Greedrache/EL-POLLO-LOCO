@@ -11,7 +11,10 @@
 <body onload="init()">
     <h1>EL POLLO LOCO</h1>
 
-    <canvas id="Canvas" width="720px" height="480px"> </canvas>
+    <div id="game-container">
+        <canvas id="Canvas" width="720px" height="480px"> </canvas>
+        <button id="start-btn" onclick="startGame()">START</button>
+    </div>
 
     <script src="classes/drawable-object.class.js"></script>
     <script src="classes/movable-object.class.js"></script>
@@ -19,6 +22,7 @@
     <script src="classes/statusbar-bottle.class.js"></script>
     <script src="classes/statusbar-coin.class.js"></script>
     <script src="classes/gameover-screen.class.js"></script>
+    <script src="classes/start-screen-class.js"></script>
     <script src="classes/background.class.js"></script>
     <script src="classes/keyboard.class.js"></script>
     <script src="classes/character.class.js"></script>

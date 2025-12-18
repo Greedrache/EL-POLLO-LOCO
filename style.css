@@ -9,7 +9,32 @@ body {
     background-color: #f0f0f0;
 }
 
+#game-container {
+    position: relative;
+    width: 720px;
+    height: 480px;
+}
 
 canvas {
     background-color: black;
+}
+
+#start-btn {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 60px;
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #ffcb19;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+#start-btn:hover {
+    background-color: #ebb916;
 }

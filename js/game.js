@@ -1,13 +1,31 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let gameStarted = false;
+let startScreen;
 
 function init() {
-
     canvas = document.getElementById("Canvas");
-    world = new World(canvas, keyboard);
+    startScreen = new StartScreen();
+    drawStartScreen();
+}
 
+function drawStartScreen() {
+    let ctx = canvas.getContext("2d");
+    startScreen.img.onload = function() {
+        ctx.drawImage(startScreen.img, 0, 0, 720, 480);
+    };
+    if (startScreen.img.complete) {
+        ctx.drawImage(startScreen.img, 0, 0, 720, 480);
+    }
+}
 
+function startGame() {
+    if (!gameStarted) {
+        gameStarted = true;
+        document.getElementById('start-btn').style.display = 'none';
+        world = new World(canvas, keyboard);
+    }
 }
 
 
