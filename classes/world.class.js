@@ -14,7 +14,9 @@ class World {
     statusbarCoin = new StatusbarCoin();
     throwableObjects = [];
     gameOverScreen = new GameOverScreen();
+    gameWinScreen = new GameOverScreen();
     gameOver = false;
+    gameWon = false;
     collectedBottles = 0;
     bottle_collect_sound = new Audio('audio/bottle-collect.mp3');
 
@@ -51,6 +53,21 @@ class World {
                 }
             }
         });
+    }
+
+    checkGameWon() {
+        if (!this.gameWon) {
+            this.level.enemies.forEach((enemy) => {
+                if (enemy instanceof Endboss && enemy.isDead && enemy.deadAnimationPlayed) {
+                    this.gameWon = true;
+                    this.gameWinScreen.showWinScreen();
+                    enemy.endboss_music.pause();
+                    setTimeout(() => {
+                        showReplayScreen();
+                    }, 3000);
+                }
+            });
+        }
     }
 
     checkClouds() {
@@ -111,6 +128,12 @@ class World {
             }, 3000);
         } else if (this.gameOver) {
             this.addtoMap(this.gameOverScreen);
+        }
+
+        // Check if Endboss is dead - Player wins!
+        this.checkGameWon();
+        if (this.gameWon) {
+            this.addtoMap(this.gameWinScreen);
         }
 
         requestAnimationFrame(() => this.draw()); // Je besser die Grafikkarte, desto höher die fps
