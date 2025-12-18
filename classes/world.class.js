@@ -40,6 +40,12 @@ class World {
     setWorld() {
         this.character.world = this;
         this.character.keyboard = this.keyboard;
+        // Setze world-Referenz für Endboss
+        this.level.enemies.forEach(enemy => {
+            if (enemy instanceof Endboss) {
+                enemy.world = this;
+            }
+        });
     }
 
     run() {

@@ -78,9 +78,10 @@ class Endboss extends MovableObject {
                 let chicken = new Chicken();
                 chicken.x = this.x - 100;
                 chicken.y = 365;
+                chicken.speed = 8; // Schnelle Chickens
                 this.world.level.enemies.push(chicken);
             }
-            let next = 2000 + Math.random() * 2000;
+            let next = 2000 + Math.random() * 0.0001;
             this._chickenSpawnTimeout = setTimeout(spawnChicken, next);
         };
         spawnChicken();
