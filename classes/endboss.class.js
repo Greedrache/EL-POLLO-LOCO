@@ -25,21 +25,26 @@ class Endboss extends MovableObject {
     ];
 
     IMAGES_HURT = [
-        "img/4_enemie_boss_chicken/3_hurt/G21.png",
-        "img/4_enemie_boss_chicken/3_hurt/G22.png",
-        "img/4_enemie_boss_chicken/3_hurt/G23.png",
+        "img/4_enemie_boss_chicken/4_hurt/G21.png",
+        "img/4_enemie_boss_chicken/4_hurt/G22.png",
+        "img/4_enemie_boss_chicken/4_hurt/G23.png",
     ];
 
     IMAGES_DEAD = [
-        "img/4_enemie_boss_chicken/4_dead/G24.png",
-        "img/4_enemie_boss_chicken/4_dead/G25.png",
-        "img/4_enemie_boss_chicken/4_dead/G26.png",
+        "img/4_enemie_boss_chicken/5_dead/G24.png",
+        "img/4_enemie_boss_chicken/5_dead/G25.png",
+        "img/4_enemie_boss_chicken/5_dead/G26.png",
     ];
+
+    isHurt = false;
 
     constructor() {
         super();
         this.loadImage(this.IMAGES_ALERT[0]);
         this.loadImages(this.IMAGES_ALERT);
+        this.loadImages(this.IMAGES_WALKING);
+        this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_DEAD);
         this.x = 3800;
         this.endboss_music.loop = true;
         this.endboss_music.volume = 0.5;
@@ -48,7 +53,9 @@ class Endboss extends MovableObject {
 
     animate() {
         setInterval(() => {
-            if (this.isAlerted) {
+            if (this.isHurt) {
+                this.playAnimation(this.IMAGES_HURT);
+            } else if (this.isAlerted) {
                 this.playAnimation(this.IMAGES_ALERT);
             }
         }, 200);
@@ -62,6 +69,14 @@ class Endboss extends MovableObject {
                 backgroundMusic.pause();
             }
         }
+    }
+
+    hit() {
+        this.isHurt = true;
+        this.energy -= 20;
+        setTimeout(() => {
+            this.isHurt = false;
+        }, 500);
     }
 }
     
