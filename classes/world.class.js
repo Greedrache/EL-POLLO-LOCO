@@ -18,7 +18,9 @@ class World {
     gameOver = false;
     gameWon = false;
     collectedBottles = 0;
+    collectedCoins = 0;
     bottle_collect_sound = new Audio('audio/bottle-collect.mp3');
+    coin_collect_sound = new Audio('audio/bottle-collect.mp3');
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext("2d");
@@ -40,6 +42,7 @@ class World {
             this.checkThrowObjects();
             this.checkClouds();
             this.checkBottleCollisions();
+            this.checkCoinCollisions();
             this.checkThrowableCollisions();
             this.checkEndbossAlert();
         }, 200);
@@ -107,6 +110,7 @@ class World {
         
         this.addObjecttoMap(this.level.clouds);
         this.addObjecttoMap(this.level.bottles);
+        this.addObjecttoMap(this.level.coins);
         this.addObjecttoMap(this.level.enemies);
         this.addtoMap(this.character);
 
@@ -194,6 +198,18 @@ class World {
                 if (this.collectedBottles > 5) this.collectedBottles = 5;
                 this.statusbarBottle.setPercentage(this.collectedBottles * 20);
                 this.bottle_collect_sound.play();
+            }
+        });
+    }
+
+    checkCoinCollisions() {
+        this.level.coins.forEach((coin, index) => {
+            if (this.character.isColliding(coin)) {
+                this.level.coins.splice(index, 1);
+                this.collectedCoins++;
+                if (this.collectedCoins > 5) this.collectedCoins = 5;
+                this.statusbarCoin.setPercentage(this.collectedCoins * 20);
+                this.coin_collect_sound.play();
             }
         });
     }
