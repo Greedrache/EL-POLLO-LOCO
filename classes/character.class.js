@@ -68,6 +68,7 @@ class Character extends MovableObject {
     ];
     world;
     lastActionTime = new Date().getTime();
+    deadAnimationPlayed = false;
     walking_sound = new Audio('audio/walking.mp3');
     jump_sound = new Audio('audio/jump .mp3');
     hurt_sound = new Audio('audio/characterbecomedamage.mp3');
@@ -111,8 +112,14 @@ class Character extends MovableObject {
 
         setInterval(() => {
             if (this.isDead()) {
-                this.playAnimation(this.IMAGES_DEAD);
-                this.dead_sound.play();
+                if (!this.deadAnimationPlayed) {
+                    this.playAnimation(this.IMAGES_DEAD);
+                    if (this.currentImage >= this.IMAGES_DEAD.length) {
+                        this.deadAnimationPlayed = true;
+                        this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
+                    }
+                    this.dead_sound.play();
+                }
             }
             else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
