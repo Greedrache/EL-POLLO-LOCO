@@ -30,7 +30,7 @@ function toggleMute() {
     }
     // Button-Icon ändern
     let btn = document.getElementById('mute-btn');
-    if (btn) btn.innerText = isMuted ? '🔈' : '🔇';
+    if (btn) btn.innerText = isMuted ? '🔇' : '🔈'; 
 }
 let canvas;
 let world;
