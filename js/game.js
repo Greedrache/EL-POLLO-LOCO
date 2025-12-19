@@ -2,33 +2,26 @@ let isMuted = false;
 
 function toggleMute() {
     isMuted = !isMuted;
-    // Hintergrundmusik
     backgroundMusic.muted = isMuted;
-    // World-Sounds, falls world existiert
     if (world) {
         if (world.bottle_collect_sound) world.bottle_collect_sound.muted = isMuted;
         if (world.coin_collect_sound) world.coin_collect_sound.muted = isMuted;
         if (world.throw_bottle_sound) world.throw_bottle_sound.muted = isMuted;
         if (world.game_won_sound) world.game_won_sound.muted = isMuted;
-        if (world.game_lost_sound) world.game_lost_sound.muted = isMuted;
-        // Endboss Musik
         let endboss = world.level && world.level.enemies && world.level.enemies.find(e => e instanceof Endboss);
         if (endboss && endboss.endboss_music) endboss.endboss_music.muted = isMuted;
-        // Character sounds
         if (world.character) {
             if (world.character.walking_sound) world.character.walking_sound.muted = isMuted;
             if (world.character.jump_sound) world.character.jump_sound.muted = isMuted;
             if (world.character.hurt_sound) world.character.hurt_sound.muted = isMuted;
             if (world.character.dead_sound) world.character.dead_sound.muted = isMuted;
         }
-        // Bottle splash sounds
         if (world.throwableObjects && world.throwableObjects.length > 0) {
             world.throwableObjects.forEach(obj => {
                 if (obj.splash_sound) obj.splash_sound.muted = isMuted;
             });
         }
     }
-    // Button-Icon ändern
     let btn = document.getElementById('mute-btn');
     if (btn) btn.innerText = isMuted ? '🔇' : '🔈'; 
 }
@@ -47,7 +40,6 @@ function init() {
     backgroundMusic.loop = true;
     backgroundMusic.volume = 1;
 
-    // Mobile Controls
     let btnLeft = document.getElementById('btn-left');
     let btnRight = document.getElementById('btn-right');
     let btnJump = document.getElementById('btn-jump');
@@ -85,10 +77,8 @@ function startGame() {
 }
 
 function showReplayScreen() {
-    // Stoppe alle Intervalle
     gameIntervals.forEach(id => clearInterval(id));
     gameIntervals = [];
-    // Versuche ALLE globalen Intervals zu stoppen (Failsafe)
     if (typeof window !== 'undefined') {
         for (let i = 1; i < 10000; i++) {
             clearInterval(i);
@@ -98,7 +88,6 @@ function showReplayScreen() {
     backgroundMusic.currentTime = 0;
     gameStarted = false;
     world = null;
-    // Endboss und Level neu initialisieren
     initLevel();
     startScreen = new StartScreen();
     drawStartScreen();
@@ -172,19 +161,3 @@ window.addEventListener("keyup", (event) => {
         keyboard.THROW = false;
     }
 });
-
-
-
-// AUfgaben 
-// 1. Coins einsammeln
-// 2. Flaschen einsammeln // fertig
-// 3. Flaschen nur werfen, wenn welche da sind // fertig
-// 4. Collision
-// 5. Endboss besiegen
-// 6. Game Over Screen                // fertig
-// 7. Fullscreen toggle
-// 8. Sound einbauen                   // so gut wie fertig, schlaf sound fehlt und endboss sound
-// 9. Startbildschirm                  // fertig auch mit play button
-
-
-// Endboss sound, springen, 
