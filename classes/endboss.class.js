@@ -74,7 +74,8 @@ class Endboss extends MovableObject {
             if (this.isDead) return;
             if (this.world && this.world.level && this.world.level.enemies && this.isAlerted) {
                 let chicken = new Chicken();
-                chicken.x = this.x - 50 - Math.random() * 200;
+                // Spawne das Huhn näher am Endboss (z.B. direkt hinter oder auf dem Boss)
+                chicken.x = this.x + 50 + Math.random() * 100; // Direkt beim Boss oder leicht dahinter
                 chicken.y = 365;
                 chicken.speed = 8; // Schnelle Chickens
                 chicken.isEndbossChicken = true; // Markierung für Instant-Kill
