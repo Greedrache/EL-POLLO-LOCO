@@ -26,10 +26,36 @@ class MovableObject extends DrawableObject {
     }
 
     isColliding(mo) {
-        return this.x + this.width > mo.x &&
-            this.x < mo.x + mo.width &&
-            this.y + this.height > mo.y &&
-            this.y < mo.y + mo.height;
+        // Hitboxen jeweils 20% kleiner und mittig
+        const shrink = 0.2;
+        const offsetSelfX = this.x + (this.width * shrink) / 2;
+        const offsetSelfY = this.y + (this.height * shrink) / 2;
+        const selfWidth = this.width * (1 - shrink);
+        const selfHeight = this.height * (1 - shrink);
+
+        const offsetMoX = mo.x + (mo.width * shrink) / 2;
+        const offsetMoY = mo.y + (mo.height * shrink) / 2;
+        const moWidth = mo.width * (1 - shrink);
+        const moHeight = mo.height * (1 - shrink);
+
+        return offsetSelfX + selfWidth > offsetMoX &&
+            offsetSelfX < offsetMoX + moWidth &&
+            offsetSelfY + selfHeight > offsetMoY &&
+            offsetSelfY < offsetMoY + moHeight;
+    }
+
+    drawFrame(ctx) {
+        // Verkleinerte Hitbox (zentriert)
+        const shrink = 0.2;
+        const offsetX = this.x + (this.width * shrink) / 2;
+        const offsetY = this.y + (this.height * shrink) / 2;
+        const w = this.width * (1 - shrink);
+        const h = this.height * (1 - shrink);
+        ctx.save();
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(offsetX, offsetY, w, h);
+        ctx.restore();
     }
 
     hit() {
