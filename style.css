@@ -97,6 +97,11 @@
         width: 720px;
         height: 480px;
     }
+    
+    .normalfont {
+        font-family: 'Arial', sans-serif;
+        font-size: 16px;
+    }
 
     canvas {
         background-color: black;
