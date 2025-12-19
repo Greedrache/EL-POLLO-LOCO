@@ -233,7 +233,6 @@ class World {
                             }
                         }, i * 30); // 3 quick checks
                     }
-                }
                 } else if (!enemy.chickenDead) {
                     this.character.hit();
                     this.statusbar.setPercentage(this.character.energy);
