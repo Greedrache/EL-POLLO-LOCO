@@ -5,6 +5,7 @@ class MovableObject extends DrawableObject {
     acceleration = 2.5;
     energy = 100;
     lastHit = 0;
+    _currentAnimation = null;
 
     isAboveGround() {
         if (this instanceof ThrowableObject) {
@@ -89,10 +90,27 @@ class MovableObject extends DrawableObject {
         this.speedY = 30;
     }
 
-    playAnimation(images) {
-        if (this.currentImage >= images.length) {
+    /**
+     * Play an animation defined by `images`.
+     * - If `loop` is false, the animation will stop at the last frame.
+     * - When switching to a different `images` array, the frame index resets.
+     */
+    playAnimation(images, loop = true) {
+        // Reset frame index when starting a new animation
+        if (this._currentAnimation !== images) {
+            this._currentAnimation = images;
             this.currentImage = 0;
         }
+
+        if (this.currentImage >= images.length) {
+            if (loop) {
+                this.currentImage = 0;
+            } else {
+                // stop at last frame
+                this.currentImage = images.length - 1;
+            }
+        }
+
         let path = images[this.currentImage];
         this.img = this.imageCache[path];
         this.currentImage++;

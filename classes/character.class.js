@@ -153,7 +153,8 @@ class Character extends MovableObject {
 
         let jumpInterval = setInterval(() => {
             if (this.isAboveGround() && !this.isDead() && !this.isHurt()) {
-                this.playAnimation(this.IMAGES_JUMPING);
+                // play jump animation once per jump (don't loop)
+                this.playAnimation(this.IMAGES_JUMPING, false);
             }
         }, 100);
         gameIntervals.push(jumpInterval);
