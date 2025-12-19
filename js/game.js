@@ -14,6 +14,19 @@ function toggleMute() {
         // Endboss Musik
         let endboss = world.level && world.level.enemies && world.level.enemies.find(e => e instanceof Endboss);
         if (endboss && endboss.endboss_music) endboss.endboss_music.muted = isMuted;
+        // Character sounds
+        if (world.character) {
+            if (world.character.walking_sound) world.character.walking_sound.muted = isMuted;
+            if (world.character.jump_sound) world.character.jump_sound.muted = isMuted;
+            if (world.character.hurt_sound) world.character.hurt_sound.muted = isMuted;
+            if (world.character.dead_sound) world.character.dead_sound.muted = isMuted;
+        }
+        // Bottle splash sounds
+        if (world.throwableObjects && world.throwableObjects.length > 0) {
+            world.throwableObjects.forEach(obj => {
+                if (obj.splash_sound) obj.splash_sound.muted = isMuted;
+            });
+        }
     }
     // Button-Icon ändern
     let btn = document.getElementById('mute-btn');

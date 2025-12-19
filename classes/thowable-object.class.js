@@ -61,7 +61,9 @@ class ThrowableObject extends MovableObject {
             this.isSplashing = true;
             this.speedY = 0;
             this.currentImage = 0;
-            this.splash_sound.play();
+            if (typeof isMuted === 'undefined' || !isMuted) {
+                this.splash_sound.play();
+            }
             let splashInterval = setInterval(() => {
                 this.playAnimation(this.IMAGES_BOTTLE_SPLASH);
                 if (this.currentImage >= this.IMAGES_BOTTLE_SPLASH.length) {
