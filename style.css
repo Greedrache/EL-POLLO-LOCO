@@ -109,6 +109,7 @@
             position: relative;
             width: 720px;
             height: 480px;
+            padding-bottom: 100px; /* reserve space for fixed buttons */
         }
 
         .normalfont {
@@ -235,3 +236,38 @@
                 height: 100vh;
             }
         }
+
+/* Impressum link/button fixed bottom-center */
+.impressum-link-btn {
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: inline-block;
+    padding: 12px 20px;
+    background: linear-gradient(180deg,#ff6b00,#ff8a2b);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 28px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    z-index: 999;
+    font-weight: 600;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+.impressum-link-btn:hover,
+.impressum-link-btn:focus {
+    transform: translateX(-50%) translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 26px rgba(0,0,0,0.22);
+    background: linear-gradient(180deg,#ff7b1a,#ff9b49);
+    outline: none;
+}
+
+@media (max-width: 600px) {
+    .impressum-link-btn { bottom: 12px; padding: 10px 16px; font-size: 15px; }
+}
+@media (max-width: 320px) {
+    .impressum-link-btn { bottom: 10px; padding: 8px 14px; font-size: 14px; }
+}
