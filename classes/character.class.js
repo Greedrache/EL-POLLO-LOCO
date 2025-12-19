@@ -1,4 +1,9 @@
 class Character extends MovableObject {
+    sleep_sound = new Audio('audio/sleepsound.mp3'); // Passe ggf. den Dateinamen an
+
+    constructor() {
+        super();
+        this.sleep_sound.volume = 0.5;
 
     y = 180;
     height = 250;
@@ -74,7 +79,6 @@ class Character extends MovableObject {
     dead_sound = new Audio('audio/sterben .mp3');
 
     constructor() {
-        super();
         this.loadImage("img/2_character_pepe/2_walk/W-21.png");
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
@@ -132,10 +136,18 @@ class Character extends MovableObject {
                     this.playAnimation(this.IMAGES_WALKING);
                 } else {
                     let timeSinceLastAction = new Date().getTime() - this.lastActionTime;
-                    if (timeSinceLastAction > 60000) {
+                    if (timeSinceLastAction > 30000) {
                         this.playAnimation(this.IMAGES_LONG_IDLE);
+                        if (this.sleep_sound.paused) {
+                            this.sleep_sound.currentTime = 0;
+                            this.sleep_sound.play();
+                        }
                     } else {
                         this.playAnimation(this.IMAGES_IDLE);
+                        if (!this.sleep_sound.paused) {
+                            this.sleep_sound.pause();
+                            this.sleep_sound.currentTime = 0;
+                        }
                     }
                 }
             }
