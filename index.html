@@ -17,6 +17,14 @@
             document.querySelectorAll('button').forEach(btn => {
                 btn.addEventListener('contextmenu', e => e.preventDefault());
             });
+
+            // Touch-detection: add class so CSS can show mobile controls only on touch devices
+            function isTouchDevice() {
+                return ('ontouchstart' in window) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints && navigator.msMaxTouchPoints > 0);
+            }
+            if (isTouchDevice()) {
+                document.body.classList.add('touch-device');
+            }
         });
     </script>
 
