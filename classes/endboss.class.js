@@ -1,10 +1,11 @@
 class Endboss extends MovableObject {
-
     y = 60;
     height = 400;
     width = 350;
     isAlerted = false;
     endboss_music = new Audio('audio/Endboss-Musik.mp3');
+    energy = 100; // 100% Lebensenergie
+    hitCount = 0;
     
     IMAGES_ALERT = [
         "img/4_enemie_boss_chicken/2_alert/G5.png",
@@ -16,7 +17,6 @@ class Endboss extends MovableObject {
         "img/4_enemie_boss_chicken/2_alert/G11.png",
         "img/4_enemie_boss_chicken/2_alert/G12.png",
     ];
-
     IMAGES_ATTACK = [
         "img/4_enemie_boss_chicken/3_attack/G13.png",
         "img/4_enemie_boss_chicken/3_attack/G14.png",
@@ -27,14 +27,12 @@ class Endboss extends MovableObject {
         "img/4_enemie_boss_chicken/3_attack/G19.png",
         "img/4_enemie_boss_chicken/3_attack/G20.png",
     ];
-
     IMAGES_WALKING = [
         "img/4_enemie_boss_chicken/1_walk/G1.png",
         "img/4_enemie_boss_chicken/1_walk/G2.png",
         "img/4_enemie_boss_chicken/1_walk/G3.png",
         "img/4_enemie_boss_chicken/1_walk/G4.png",
     ];
-
     IMAGES_HURT = [
         "img/4_enemie_boss_chicken/4_hurt/G21.png",
         "img/4_enemie_boss_chicken/4_hurt/G22.png",
@@ -156,15 +154,20 @@ class Endboss extends MovableObject {
         if (this.isDead) return;
         this.isHurt = true;
         this.hitCount++;
+        // 3 Treffer = tot, 1 Treffer = 80%, 2 Treffer = 20%
         if (this.hitCount >= 3) {
+            this.energy = 0;
             this.isDead = true;
             this.endboss_music.pause();
             if (this._chickenSpawnTimeout) clearTimeout(this._chickenSpawnTimeout);
-        } else {
-            setTimeout(() => {
-                this.isHurt = false;
-            }, 500);
+        } else if (this.hitCount === 2) {
+            this.energy = 20;
+        } else if (this.hitCount === 1) {
+            this.energy = 80;
         }
+        setTimeout(() => {
+            this.isHurt = false;
+        }, 500);
     }
 }
     

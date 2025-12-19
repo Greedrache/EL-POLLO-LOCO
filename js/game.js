@@ -58,6 +58,8 @@ function showReplayScreen() {
     backgroundMusic.currentTime = 0;
     gameStarted = false;
     world = null;
+    // Endboss und Level neu initialisieren
+    initLevel();
     startScreen = new StartScreen();
     drawStartScreen();
     let btn = document.getElementById('start-btn');

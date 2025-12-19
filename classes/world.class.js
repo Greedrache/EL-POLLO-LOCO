@@ -12,6 +12,7 @@ class World {
     statusbar = new Statusbar();
     statusbarBottle = new StatusbarBottle();
     statusbarCoin = new StatusbarCoin();
+    statusbarEndboss = new EndbossStatusbar();
     throwableObjects = [];
     gameOverScreen = new GameOverScreen();
     gameWinScreen = new GameOverScreen();
@@ -128,7 +129,6 @@ class World {
         this.ctx.translate(this.camera_x, 0); 
 
         this.addObjecttoMap(this.level.backgroundObject);
-        
         this.addObjecttoMap(this.level.clouds);
         this.addObjecttoMap(this.level.bottles);
         this.addObjecttoMap(this.level.coins);
@@ -139,10 +139,16 @@ class World {
         this.addtoMap(this.statusbar);
         this.addtoMap(this.statusbarBottle);
         this.addtoMap(this.statusbarCoin);
+
+        // Endboss-Statusbar nur anzeigen, wenn Endboss alarmiert ist (Musik läuft)
+        let endboss = this.level.enemies.find(e => e instanceof Endboss);
+        if (endboss && !endboss.isDead && endboss.isAlerted) {
+            this.statusbarEndboss.setPercentage(endboss.energy || 100);
+            this.statusbarEndboss.draw(this.ctx);
+        }
+
         this.ctx.translate(this.camera_x, 0); 
-
         this.addObjecttoMap(this.throwableObjects);
-
         this.ctx.translate(-this.camera_x, 0); // Kamera zurücksetzen
 
         if (this.character.isDead() && !this.gameOver) {
@@ -168,8 +174,7 @@ class World {
             this.addtoMap(this.gameWinScreen);
         }
 
-        requestAnimationFrame(() => this.draw()); // Je besser die Grafikkarte, desto höher die fps
-
+        requestAnimationFrame(() => this.draw());
     }
 
     addObjecttoMap(objects) {
