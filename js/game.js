@@ -34,26 +34,36 @@ let backgroundMusic = new Audio('audio/backround-musik.mp3');
 let gameIntervals = [];
 
 function init() {
+    setupCanvasAndStartScreen();
+    setupBackgroundMusic();
+    setupMobileControls();
+}
+
+function setupCanvasAndStartScreen() {
     canvas = document.getElementById("Canvas");
     startScreen = new StartScreen();
     drawStartScreen();
+}
+
+function setupBackgroundMusic() {
     backgroundMusic.loop = true;
     backgroundMusic.volume = 1;
+}
 
+function setupMobileControls() {
     let btnLeft = document.getElementById('btn-left');
     let btnRight = document.getElementById('btn-right');
     let btnJump = document.getElementById('btn-jump');
     let btnThrow = document.getElementById('btn-throw');
-    if (btnLeft && btnRight && btnJump && btnThrow) {
-        btnLeft.addEventListener('touchstart', () => { keyboard.LEFT = true; });
-        btnLeft.addEventListener('touchend', () => { keyboard.LEFT = false; });
-        btnRight.addEventListener('touchstart', () => { keyboard.RIGHT = true; });
-        btnRight.addEventListener('touchend', () => { keyboard.RIGHT = false; });
-        btnJump.addEventListener('touchstart', () => { keyboard.SPACE = true; });
-        btnJump.addEventListener('touchend', () => { keyboard.SPACE = false; });
-        btnThrow.addEventListener('touchstart', () => { keyboard.THROW = true; });
-        btnThrow.addEventListener('touchend', () => { keyboard.THROW = false; });
-    }
+    if (!btnLeft || !btnRight || !btnJump || !btnThrow) return;
+    btnLeft.addEventListener('touchstart', () => { keyboard.LEFT = true; });
+    btnLeft.addEventListener('touchend', () => { keyboard.LEFT = false; });
+    btnRight.addEventListener('touchstart', () => { keyboard.RIGHT = true; });
+    btnRight.addEventListener('touchend', () => { keyboard.RIGHT = false; });
+    btnJump.addEventListener('touchstart', () => { keyboard.SPACE = true; });
+    btnJump.addEventListener('touchend', () => { keyboard.SPACE = false; });
+    btnThrow.addEventListener('touchstart', () => { keyboard.THROW = true; });
+    btnThrow.addEventListener('touchend', () => { keyboard.THROW = false; });
 }
 
 function drawStartScreen() {
