@@ -11,6 +11,8 @@
 
 <body onload="init()">
     <h1>El Pollo Loco</h1>
+    <!-- orientation notification (hidden by default) -->
+    <div id="orientation-notice" aria-hidden="true"></div>
     <script>
         // Kontextmenü auf allen Buttons verhindern
         document.addEventListener('DOMContentLoaded', function () {
@@ -24,6 +26,35 @@
             }
             if (isTouchDevice()) {
                 document.body.classList.add('touch-device');
+                // orientation change notification
+                const orientationNoticeEl = document.getElementById('orientation-notice');
+                let _orientTimeout = null;
+                let _lastPortrait = window.matchMedia('(orientation: portrait)').matches;
+
+                function showOrientationNotice(text) {
+                    if (!orientationNoticeEl) return;
+                    orientationNoticeEl.textContent = text;
+                    orientationNoticeEl.setAttribute('aria-hidden', 'false');
+                    orientationNoticeEl.classList.add('visible');
+                    clearTimeout(_orientTimeout);
+                    _orientTimeout = setTimeout(() => {
+                        orientationNoticeEl.classList.remove('visible');
+                        orientationNoticeEl.setAttribute('aria-hidden', 'true');
+                    }, 3000);
+                }
+
+                function handleOrientationChange() {
+                    const isPortrait = window.matchMedia('(orientation: portrait)').matches;
+                    if (isPortrait !== _lastPortrait) {
+                        _lastPortrait = isPortrait;
+                        const msg = isPortrait ? 'Gerät gedreht — Hochformat' : 'Gerät gedreht — Querformat';
+                        showOrientationNotice(msg);
+                    }
+                }
+
+                window.addEventListener('orientationchange', handleOrientationChange);
+                // Also listen to resize (some browsers don't fire orientationchange reliably)
+                window.addEventListener('resize', handleOrientationChange);
             }
         });
     </script>
@@ -32,7 +63,7 @@
         <canvas id="Canvas" width="720px" height="480px"> </canvas>
         <nav class="normalfont">
             <h3>Steuerung (PC):</h3> <br>
-            <span>Gehen: A / D oder <kbd>&#8592;</kbd> / <kbd>&#8594;</kbd> &nbsp; | &nbsp; Springen: Leertaste &nbsp; |
+            <span>Gehen: A / D oder <kbd>&#8592;</kbd> / <kbd>&#8594;</kbd> &nbsp;  <br> &nbsp; Springen: Leertaste &nbsp;  <br>
                 &nbsp; Werfen: S</span>
         </nav>
         <div id="pc-controls" style="margin-top: 12px; text-align: center; font-size: 1.1em;">
