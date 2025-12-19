@@ -117,34 +117,45 @@ class Character extends MovableObject {
     }
 
     _setupAnimInterval() {
-        let animInterval = setInterval(() => {
-            if (this.isDead()) {
-                if (!this.deadAnimationPlayed) {
-                    this.playAnimation(this.IMAGES_DEAD);
-                    if (this.currentImage >= this.IMAGES_DEAD.length) {
-                        this.deadAnimationPlayed = true;
-                        this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
-                    }
-                    this.dead_sound.play();
-                }
-            } else if (this.isHurt()) {
-                this.playAnimation(this.IMAGES_HURT);
-                this.hurt_sound.play();
-            } else if (!this.isAboveGround()) {
-                if (this.world && (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) this.playAnimation(this.IMAGES_WALKING);
-                else {
-                    let timeSinceLastAction = new Date().getTime() - this.lastActionTime;
-                    if (timeSinceLastAction > 30000) {
-                        this.playAnimation(this.IMAGES_LONG_IDLE);
-                        if (this.sleep_sound.paused) { this.sleep_sound.currentTime = 0; this.sleep_sound.play(); }
-                    } else {
-                        this.playAnimation(this.IMAGES_IDLE);
-                        if (!this.sleep_sound.paused) { this.sleep_sound.pause(); this.sleep_sound.currentTime = 0; }
-                    }
-                }
-            }
-        }, 50);
+        let animInterval = setInterval(() => this._updateAnim(), 50);
         gameIntervals.push(animInterval);
+    }
+
+    _updateAnim() {
+        if (this._handleDeathOrHurt()) return;
+        if (!this.isAboveGround()) this._handleGroundAnimations();
+    }
+
+    _handleDeathOrHurt() {
+        if (this.isDead()) {
+            if (!this.deadAnimationPlayed) {
+                this.playAnimation(this.IMAGES_DEAD);
+                if (this.currentImage >= this.IMAGES_DEAD.length) {
+                    this.deadAnimationPlayed = true;
+                    this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
+                }
+                this.dead_sound.play();
+            }
+            return true;
+        }
+        if (this.isHurt()) {
+            this.playAnimation(this.IMAGES_HURT);
+            this.hurt_sound.play();
+            return true;
+        }
+        return false;
+    }
+
+    _handleGroundAnimations() {
+        if (this.world && (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) { this.playAnimation(this.IMAGES_WALKING); return; }
+        let timeSinceLastAction = new Date().getTime() - this.lastActionTime;
+        if (timeSinceLastAction > 30000) {
+            this.playAnimation(this.IMAGES_LONG_IDLE);
+            if (this.sleep_sound.paused) { this.sleep_sound.currentTime = 0; this.sleep_sound.play(); }
+        } else {
+            this.playAnimation(this.IMAGES_IDLE);
+            if (!this.sleep_sound.paused) { this.sleep_sound.pause(); this.sleep_sound.currentTime = 0; }
+        }
     }
 
     _setupJumpInterval() {
