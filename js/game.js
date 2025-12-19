@@ -2,28 +2,27 @@ let isMuted = false;
 
 function toggleMute() {
     isMuted = !isMuted;
-    backgroundMusic.muted = isMuted;
-    if (world) {
-        if (world.bottle_collect_sound) world.bottle_collect_sound.muted = isMuted;
-        if (world.coin_collect_sound) world.coin_collect_sound.muted = isMuted;
-        if (world.throw_bottle_sound) world.throw_bottle_sound.muted = isMuted;
-        if (world.game_won_sound) world.game_won_sound.muted = isMuted;
-        let endboss = world.level && world.level.enemies && world.level.enemies.find(e => e instanceof Endboss);
-        if (endboss && endboss.endboss_music) endboss.endboss_music.muted = isMuted;
-        if (world.character) {
-            if (world.character.walking_sound) world.character.walking_sound.muted = isMuted;
-            if (world.character.jump_sound) world.character.jump_sound.muted = isMuted;
-            if (world.character.hurt_sound) world.character.hurt_sound.muted = isMuted;
-            if (world.character.dead_sound) world.character.dead_sound.muted = isMuted;
-        }
-        if (world.throwableObjects && world.throwableObjects.length > 0) {
-            world.throwableObjects.forEach(obj => {
-                if (obj.splash_sound) obj.splash_sound.muted = isMuted;
-            });
-        }
-    }
+    setBackgroundMuted(isMuted);
+    setWorldMuted(isMuted);
+    updateMuteBtn();
+}
+
+function setBackgroundMuted(muted) {
+    if (typeof backgroundMusic !== 'undefined') backgroundMusic.muted = muted;
+}
+
+function setWorldMuted(muted) {
+    if (!world) return;
+    ['bottle_collect_sound','coin_collect_sound','throw_bottle_sound','game_won_sound','game_lost_sound'].forEach(n => world[n] && (world[n].muted = muted));
+    let endboss = world.level && world.level.enemies && world.level.enemies.find(e => e instanceof Endboss);
+    if (endboss && endboss.endboss_music) endboss.endboss_music.muted = muted;
+    if (world.character) ['walking_sound','jump_sound','hurt_sound','dead_sound'].forEach(n => world.character[n] && (world.character[n].muted = muted));
+    if (world.throwableObjects && world.throwableObjects.length) world.throwableObjects.forEach(o => o.splash_sound && (o.splash_sound.muted = muted));
+}
+
+function updateMuteBtn() {
     let btn = document.getElementById('mute-btn');
-    if (btn) btn.innerText = isMuted ? '🔇' : '🔈'; 
+    if (btn) btn.innerText = isMuted ? '🔇' : '🔈';
 }
 let canvas;
 let world;
