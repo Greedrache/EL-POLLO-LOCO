@@ -206,7 +206,7 @@ class World {
     }
 
     checkCollisions() {
-        if (this.gameWon) return; // Nach Sieg keinen Schaden mehr bekommen
+        if (this.gameWon) return;
         this.level.enemies.forEach((enemy, index) => {
             if (this.character.isColliding(enemy)) {
                 if (enemy instanceof Endboss && !enemy.isDead) {
