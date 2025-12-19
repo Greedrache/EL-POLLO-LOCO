@@ -1,7 +1,7 @@
 .impressumdiv {
     max-width: 800px;
     width: 90%;
-    margin: 40px auto;
+    margin: 16px auto;
     padding: 2rem;
     display: flex;
     flex-direction: column;
@@ -9,11 +9,12 @@
     align-items: center;
     text-align: center;
     text-align: center;
+    font-size: 16px; /* Basis: mindestens 16px */
     font-family: Arial, sans-serif;
     line-height: 1.6;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 20px;
 }
 
 body {
@@ -30,9 +31,21 @@ body {
     background-size: cover;
     background-position: center;
 }
+.html,
+body,
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* allow body scrolling when content exceeds viewport but avoid forced scrollbar */
+body {
+    overflow-y: auto;
+}
 .impressumdiv h1 {
     margin: 0;
-    font-size: 2.25rem;
+    font-size: clamp(24px, 5vw, 36px);
     line-height: 1.1;
     font-weight: 700;
     color: #111;
@@ -40,7 +53,7 @@ body {
 
 .impressumdiv h2 {
     margin: 0;
-    font-size: 1.25rem;
+    font-size: clamp(18px, 3.2vw, 20px);
     font-weight: 600;
     color: #333;
     opacity: 0.95;
@@ -48,7 +61,8 @@ body {
 
 .impressumdiv p {
     margin: 0 auto;
-    font-size: 1rem;
+    /* Mindestens 16px, skaliert leicht auf größeren Bildschirmen */
+    font-size: clamp(16px, 2vw, 18px);
     color: #444;
     max-width: 70ch;
     text-align: center;
@@ -61,7 +75,19 @@ body {
         width: 95%;
         margin: 20px auto;
     }
-    .impressumdiv h1 { font-size: 1.5rem; }
-    .impressumdiv h2 { font-size: 1.05rem; }
-    .impressumdiv p  { font-size: 0.95rem; }
+    .impressumdiv h1 { font-size: clamp(20px, 6.5vw, 28px); }
+    .impressumdiv h2 { font-size: clamp(16px, 4.5vw, 18px); }
+    .impressumdiv p  { font-size: 16px; }
+}
+
+/* Spezielle Feinabstimmung für sehr kleine Bildschirme (z. B. 320px) */
+@media (max-width: 320px) {
+    .impressumdiv {
+        padding: 0.8rem;
+        width: 96%;
+        margin: 12px auto;
+    }
+    .impressumdiv h1 { font-size: 20px; }
+    .impressumdiv h2 { font-size: 16px; }
+    .impressumdiv p  { font-size: 16px; }
 }
