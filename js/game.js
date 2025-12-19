@@ -88,6 +88,12 @@ function showReplayScreen() {
     // Stoppe alle Intervalle
     gameIntervals.forEach(id => clearInterval(id));
     gameIntervals = [];
+    // Versuche ALLE globalen Intervals zu stoppen (Failsafe)
+    if (typeof window !== 'undefined') {
+        for (let i = 1; i < 10000; i++) {
+            clearInterval(i);
+        }
+    }
     backgroundMusic.pause();
     backgroundMusic.currentTime = 0;
     gameStarted = false;
