@@ -104,29 +104,34 @@ class Endboss extends MovableObject {
     }
 
     animate() {
-        let animInterval = setInterval(() => {
-            if (this.isDead) {
-                if (!this.deadAnimationPlayed) {
-                    this.playAnimation(this.IMAGES_DEAD);
-                    if (this.currentImage >= this.IMAGES_DEAD.length) {
-                        this.deadAnimationPlayed = true;
-                        this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
-                    }
-                }
-            } else if (this.isHurt) {
-                this.playAnimation(this.IMAGES_HURT);
-            } else if (this.isAttacking) {
-                this.playAnimation(this.IMAGES_ATTACK);
-            } else if (this.isWalking && this.isAlerted) {
-                this.playAnimation(this.IMAGES_WALKING);
-            } else if (this.isAlerted) {
-                this.playAnimation(this.IMAGES_ALERT);
-            } else {
-                // Standby - zeige erstes Bild
-                this.loadImage(this.IMAGES_ALERT[0]);
-            }
-        }, 200);
+        let animInterval = setInterval(() => this._updateAnim(), 200);
         gameIntervals.push(animInterval);
+    }
+
+    _updateAnim() {
+        if (this._handleDeath()) return;
+        if (this.isHurt) { this.playAnimation(this.IMAGES_HURT); return; }
+        if (this._handleActionAnimations()) return;
+        this.loadImage(this.IMAGES_ALERT[0]);
+    }
+
+    _handleDeath() {
+        if (!this.isDead) return false;
+        if (!this.deadAnimationPlayed) {
+            this.playAnimation(this.IMAGES_DEAD);
+            if (this.currentImage >= this.IMAGES_DEAD.length) {
+                this.deadAnimationPlayed = true;
+                this.loadImage(this.IMAGES_DEAD[this.IMAGES_DEAD.length - 1]);
+            }
+        }
+        return true;
+    }
+
+    _handleActionAnimations() {
+        if (this.isAttacking) { this.playAnimation(this.IMAGES_ATTACK); return true; }
+        if (this.isWalking && this.isAlerted) { this.playAnimation(this.IMAGES_WALKING); return true; }
+        if (this.isAlerted) { this.playAnimation(this.IMAGES_ALERT); return true; }
+        return false;
     }
 
     alert() {
