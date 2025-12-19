@@ -47,12 +47,12 @@ body {
 }
 
 .impressumdiv p {
-    margin: 0;
+    margin: 0 auto;
     font-size: 1rem;
     color: #444;
     max-width: 70ch;
-    text-align: left;
-    align-self: stretch;
+    text-align: center;
+    align-self: center;
 }
 
 @media (max-width: 600px) {
