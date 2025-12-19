@@ -206,18 +206,16 @@ class World {
     }
 
     checkCollisions() {
+        if (this.gameWon) return; // Nach Sieg keinen Schaden mehr bekommen
         this.level.enemies.forEach((enemy, index) => {
             if (this.character.isColliding(enemy)) {
-                
                 if (enemy instanceof Endboss && !enemy.isDead) {
                     this.character.energy = 0;
                     this.statusbar.setPercentage(0);
                 } else if (enemy.isEndbossChicken && !enemy.chickenDead) {
-                    
                     this.character.energy = 0;
                     this.statusbar.setPercentage(0);
                 } else if (this.character.isAboveGround() && this.character.speedY < 0 && !enemy.chickenDead) {
-                    
                     for (let i = 0; i < 3; i++) {
                         setTimeout(() => {
                             if (!enemy.chickenDead) {
