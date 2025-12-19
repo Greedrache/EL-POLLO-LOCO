@@ -218,11 +218,22 @@ class World {
                     this.character.energy = 0;
                     this.statusbar.setPercentage(0);
                 } else if (this.character.isAboveGround() && this.character.speedY < 0 && !enemy.chickenDead) {
-                    enemy.die();
-                    this.character.speedY = 15;
-                    setTimeout(() => {
-                        this.level.enemies.splice(index, 1);
-                    }, 1000);
+                    // Try killing chicken multiple times for reliability
+                    for (let i = 0; i < 3; i++) {
+                        setTimeout(() => {
+                            if (!enemy.chickenDead) {
+                                enemy.die();
+                                this.character.speedY = 15;
+                                setTimeout(() => {
+                                    const idx = this.level.enemies.indexOf(enemy);
+                                    if (idx !== -1) {
+                                        this.level.enemies.splice(idx, 1);
+                                    }
+                                }, 1000);
+                            }
+                        }, i * 30); // 3 quick checks
+                    }
+                }
                 } else if (!enemy.chickenDead) {
                     this.character.hit();
                     this.statusbar.setPercentage(this.character.energy);
