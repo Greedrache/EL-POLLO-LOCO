@@ -204,35 +204,30 @@ class World {
 
     checkCollisions() {
         if (this.gameWon) return;
-        this.level.enemies.forEach((enemy, index) => {
-            if (this.character.isColliding(enemy)) {
-                if (enemy instanceof Endboss && !enemy.isDead) {
-                    this.character.energy = 0;
-                    this.statusbar.setPercentage(0);
-                } else if (enemy.isEndbossChicken && !enemy.chickenDead) {
-                    this.character.energy = 0;
-                    this.statusbar.setPercentage(0);
-                } else if (this.character.isAboveGround() && this.character.speedY < 0 && !enemy.chickenDead) {
-                    for (let i = 0; i < 3; i++) {
-                        setTimeout(() => {
-                            if (!enemy.chickenDead) {
-                                enemy.die();
-                                this.character.speedY = 15;
-                                setTimeout(() => {
-                                    const idx = this.level.enemies.indexOf(enemy);
-                                    if (idx !== -1) {
-                                        this.level.enemies.splice(idx, 1);
-                                    }
-                                }, 50);
-                            }
-                        }, i * 30); 
-                    }
-                } else if (!enemy.chickenDead) {
-                    this.character.hit();
-                    this.statusbar.setPercentage(this.character.energy);
+        this.level.enemies.forEach((enemy, index) => this._handleEnemyCollision(enemy, index));
+    }
+
+    _handleEnemyCollision(enemy, index) {
+        if (!this.character.isColliding(enemy)) return;
+        if (enemy instanceof Endboss && !enemy.isDead) { this.character.energy = 0; this.statusbar.setPercentage(0); return; }
+        if (enemy.isEndbossChicken && !enemy.chickenDead) { this.character.energy = 0; this.statusbar.setPercentage(0); return; }
+        if (this.character.isAboveGround() && this.character.speedY < 0 && !enemy.chickenDead) { this._handleStomp(enemy); return; }
+        if (!enemy.chickenDead) { this.character.hit(); this.statusbar.setPercentage(this.character.energy); }
+    }
+
+    _handleStomp(enemy) {
+        for (let i = 0; i < 3; i++) {
+            setTimeout(() => {
+                if (!enemy.chickenDead) {
+                    enemy.die();
+                    this.character.speedY = 15;
+                    setTimeout(() => {
+                        const idx = this.level.enemies.indexOf(enemy);
+                        if (idx !== -1) this.level.enemies.splice(idx, 1);
+                    }, 50);
                 }
-            }
-        });
+            }, i * 30);
+        }
     }
 
     checkBottleCollisions() {
