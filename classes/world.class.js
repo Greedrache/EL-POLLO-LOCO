@@ -110,7 +110,7 @@ class World {
     }
 
     checkThrowObjects() {
-        if (this.keyboard.THROW && this.collectedBottles > 0) {
+        if (this.keyboard.THROW && this.collectedBottles > 0 && !this.character.isDead()) {
             let throwableObject = new ThrowableObject(
                 this.character.x + 100,
                 this.character.y + 100
