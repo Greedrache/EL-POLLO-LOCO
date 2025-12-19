@@ -226,7 +226,7 @@ class World {
                                     if (idx !== -1) {
                                         this.level.enemies.splice(idx, 1);
                                     }
-                                }, 1000);
+                                }, 50);
                             }
                         }, i * 30); 
                     }
