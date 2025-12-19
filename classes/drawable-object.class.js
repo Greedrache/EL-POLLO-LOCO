@@ -13,7 +13,6 @@ class DrawableObject {
     }
 
     drawFrame(ctx) {
-        // Standard-Hitbox (volle Größe)
         ctx.save();
         ctx.strokeStyle = 'red';
         ctx.lineWidth = 2;

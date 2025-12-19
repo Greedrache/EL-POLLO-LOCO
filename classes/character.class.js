@@ -3,8 +3,7 @@ class Character extends MovableObject {
         ctx.save();
         ctx.strokeStyle = 'red';
         ctx.lineWidth = 2;
-        // Eine Hitbox: links und rechts schmaler, volle Höhe
-        const sideShrink = 0.2; // 20% links/rechts weg
+        const sideShrink = 0.2;
         const boxWidth = this.width * (1 - sideShrink);
         const boxX = this.x + (this.width - boxWidth) / 2;
         ctx.strokeRect(boxX, this.y, boxWidth, this.height);

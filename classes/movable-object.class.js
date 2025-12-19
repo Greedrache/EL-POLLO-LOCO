@@ -8,10 +8,10 @@ class MovableObject extends DrawableObject {
 
     isAboveGround() {
         if (this instanceof ThrowableObject) {
-            if (this.isSplashing) return false;  // Stop gravity when splashing
-            return this.y < 350;  // Boden für Flaschen
+            if (this.isSplashing) return false;
+            return this.y < 350;
         } else {
-            return this.y < 180;  // Character stoppt bei y = 180 (Boden)
+            return this.y < 180;
         }
     }
 
@@ -26,7 +26,6 @@ class MovableObject extends DrawableObject {
     }
 
     isColliding(mo) {
-        // Hitboxen jeweils 20% kleiner und mittig
         const shrink = 0.2;
         const offsetSelfX = this.x + (this.width * shrink) / 2;
         const offsetSelfY = this.y + (this.height * shrink) / 2;
@@ -45,7 +44,6 @@ class MovableObject extends DrawableObject {
     }
 
     drawFrame(ctx) {
-        // Verkleinerte Hitbox (zentriert)
         const shrink = 0.2;
         const offsetX = this.x + (this.width * shrink) / 2;
         const offsetY = this.y + (this.height * shrink) / 2;

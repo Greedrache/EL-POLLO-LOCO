@@ -4,7 +4,7 @@ class Endboss extends MovableObject {
     width = 350;
     isAlerted = false;
     endboss_music = new Audio('audio/Endboss-Musik.mp3');
-    energy = 100; // 100% Lebensenergie
+    energy = 100;
     hitCount = 0;
     
     IMAGES_ALERT = [
@@ -74,11 +74,10 @@ class Endboss extends MovableObject {
             if (this.isDead) return;
             if (this.world && this.world.level && this.world.level.enemies && this.isAlerted) {
                 let chicken = new Chicken();
-                // Spawne das Huhn näher am Endboss (z.B. direkt hinter oder auf dem Boss)
-                chicken.x = this.x + 50 + Math.random() * 100; // Direkt beim Boss oder leicht dahinter
+                chicken.x = this.x + 50 + Math.random() * 100;
                 chicken.y = 365;
-                chicken.speed = 8; // Schnelle Chickens
-                chicken.isEndbossChicken = true; // Markierung für Instant-Kill
+                chicken.speed = 8;
+                chicken.isEndbossChicken = true;
                 this.world.level.enemies.push(chicken);
             }
             let next = 2000 + Math.random() * 0.0001;
@@ -88,15 +87,14 @@ class Endboss extends MovableObject {
     }
 
     startMovement() {
-        // Zufällig laufen und stoppen
+        
         let walkInterval = setInterval(() => {
             if (this.isAlerted && !this.isDead && !this.isHurt) {
-                this.isWalking = Math.random() > 0.3; // 70% Chance zu laufen
+                this.isWalking = Math.random() > 0.3;
             }
         }, 1000);
         gameIntervals.push(walkInterval);
 
-        // Bewegung nach links
         let moveInterval = setInterval(() => {
             if (this.isWalking && this.isAlerted && !this.isDead) {
                 this.x -= this.speed;

@@ -1,9 +1,9 @@
 class EndbossStatusbar extends DrawableObject {
     IMAGES_STATUSBAR = [
-        "img/7_statusbars/2_statusbar_endboss/orange/orange0.png", // 0% (tot)
-        "img/7_statusbars/2_statusbar_endboss/orange/orange20.png", // 20%
-        "img/7_statusbars/2_statusbar_endboss/orange/orange80.png", // 80%
-        "img/7_statusbars/2_statusbar_endboss/orange/orange100.png" // 100%
+        "img/7_statusbars/2_statusbar_endboss/orange/orange0.png",
+        "img/7_statusbars/2_statusbar_endboss/orange/orange20.png",
+        "img/7_statusbars/2_statusbar_endboss/orange/orange80.png",
+        "img/7_statusbars/2_statusbar_endboss/orange/orange100.png"
     ];
     percentage = 100;
     constructor() {
@@ -12,7 +12,7 @@ class EndbossStatusbar extends DrawableObject {
         this.width = 300;
         this.height = 80;
         this.setPercentage(100);
-        // x/y werden dynamisch im draw gesetzt
+        
     }
     setPercentage(percentage) {
         this.percentage = percentage;
@@ -32,12 +32,12 @@ class EndbossStatusbar extends DrawableObject {
             return 0;
         }
     }
-    // Überschreibe draw, um Statusbar mittig unten zu zeichnen
+    
     draw(ctx) {
-        // Canvas-Mitte berechnen
+        
         const canvas = ctx.canvas;
         this.x = (canvas.width / 2) - (this.width / 2);
-        this.y = canvas.height - this.height - 10; // 10px Abstand zum unteren Rand
+        this.y = canvas.height - this.height - 10;
         super.draw(ctx);
     }
 }

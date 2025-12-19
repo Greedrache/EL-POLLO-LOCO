@@ -41,7 +41,6 @@ class World {
     setWorld() {
         this.character.world = this;
         this.character.keyboard = this.keyboard;
-        // Setze world-Referenz für Endboss
         this.level.enemies.forEach(enemy => {
             if (enemy instanceof Endboss) {
                 enemy.world = this;
@@ -68,7 +67,7 @@ class World {
                 if (this.character.x > enemy.x - 500) {
                     enemy.alert();
                 }
-                // Attack wenn Spieler sehr nah ist
+                
                 if (this.character.x > enemy.x - 200 && enemy.isAlerted) {
                     enemy.attack();
                 } else {
@@ -99,7 +98,7 @@ class World {
         let cameraLeft = -this.camera_x;
         
         this.level.clouds.forEach((cloud) => {
-            // Wenn Wolke links aus dem Bild verschwindet, rechts neu spawnen
+            
             if (cloud.x + cloud.width < cameraLeft - 100) {
                 cloud.x = cameraRight + Math.random() * 300;
                 cloud.y = 20 + Math.random() * 50;
@@ -140,7 +139,7 @@ class World {
         this.addtoMap(this.statusbarBottle);
         this.addtoMap(this.statusbarCoin);
 
-        // Endboss-Statusbar nur anzeigen, wenn Endboss alarmiert ist (Musik läuft)
+        
         let endboss = this.level.enemies.find(e => e instanceof Endboss);
         if (endboss && !endboss.isDead && endboss.isAlerted) {
             this.statusbarEndboss.setPercentage(endboss.energy || 100);
@@ -149,13 +148,13 @@ class World {
 
         this.ctx.translate(this.camera_x, 0); 
         this.addObjecttoMap(this.throwableObjects);
-        this.ctx.translate(-this.camera_x, 0); // Kamera zurücksetzen
+        this.ctx.translate(-this.camera_x, 0); 
 
         if (this.character.isDead() && !this.gameOver) {
             this.gameOver = true;
             this.addtoMap(this.gameOverScreen);
             this.game_lost_sound.play();
-            // Stoppe Endboss Musik
+            
             this.level.enemies.forEach((enemy) => {
                 if (enemy instanceof Endboss) {
                     enemy.endboss_music.pause();
@@ -168,7 +167,7 @@ class World {
             this.addtoMap(this.gameOverScreen);
         }
 
-        // Check if Endboss is dead - Player wins!
+        
         this.checkGameWon();
         if (this.gameWon) {
             this.addtoMap(this.gameWinScreen);
@@ -188,7 +187,7 @@ class World {
             this.spinImage(mo);
         }
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        // ...
 
         if (mo.otherDirection) {
             this.spinImageBack(mo);
@@ -209,16 +208,16 @@ class World {
     checkCollisions() {
         this.level.enemies.forEach((enemy, index) => {
             if (this.character.isColliding(enemy)) {
-                // Endboss Kollision = sofortiger Tod
+                
                 if (enemy instanceof Endboss && !enemy.isDead) {
                     this.character.energy = 0;
                     this.statusbar.setPercentage(0);
                 } else if (enemy.isEndbossChicken && !enemy.chickenDead) {
-                    // Endboss-Chicken = Instant-Kill
+                    
                     this.character.energy = 0;
                     this.statusbar.setPercentage(0);
                 } else if (this.character.isAboveGround() && this.character.speedY < 0 && !enemy.chickenDead) {
-                    // Try killing chicken multiple times for reliability
+                    
                     for (let i = 0; i < 3; i++) {
                         setTimeout(() => {
                             if (!enemy.chickenDead) {
@@ -231,7 +230,7 @@ class World {
                                     }
                                 }, 1000);
                             }
-                        }, i * 30); // 3 quick checks
+                        }, i * 30); 
                     }
                 } else if (!enemy.chickenDead) {
                     this.character.hit();
@@ -267,14 +266,14 @@ class World {
 
     checkThrowableCollisions() {
         this.throwableObjects.forEach((bottle, bottleIndex) => {
-            // Check if bottle hits ground
+            
             if (bottle.hasHitGround() && !bottle.isSplashing) {
                 bottle.splash();
                 setTimeout(() => {
                     this.throwableObjects.splice(bottleIndex, 1);
                 }, 500);
             }
-            // Check if bottle hits endboss
+            
             this.level.enemies.forEach((enemy) => {
                 if (enemy instanceof Endboss && bottle.isColliding(enemy) && !bottle.isSplashing) {
                     bottle.splash();
