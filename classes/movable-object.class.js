@@ -90,28 +90,14 @@ class MovableObject extends DrawableObject {
         this.speedY = 30;
     }
 
-    /**
-     * Play an animation defined by `images`.
-     * - If `loop` is false, the animation will stop at the last frame.
-     * - When switching to a different `images` array, the frame index resets.
-     */
     playAnimation(images, loop = true) {
-        // Reset frame index when starting a new animation
-        if (this._currentAnimation !== images) {
-            this._currentAnimation = images;
-            this.currentImage = 0;
-        }
+        if (this._currentAnimation !== images) { this._currentAnimation = images; this.currentImage = 0; }
+        this._advanceAnimation(images, loop);
+    }
 
-        if (this.currentImage >= images.length) {
-            if (loop) {
-                this.currentImage = 0;
-            } else {
-                // stop at last frame
-                this.currentImage = images.length - 1;
-            }
-        }
-
-        let path = images[this.currentImage];
+    _advanceAnimation(images, loop) {
+        if (this.currentImage >= images.length) this.currentImage = loop ? 0 : images.length - 1;
+        const path = images[this.currentImage];
         this.img = this.imageCache[path];
         this.currentImage++;
     }
