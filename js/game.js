@@ -1,3 +1,24 @@
+let isMuted = false;
+
+function toggleMute() {
+    isMuted = !isMuted;
+    // Hintergrundmusik
+    backgroundMusic.muted = isMuted;
+    // World-Sounds, falls world existiert
+    if (world) {
+        if (world.bottle_collect_sound) world.bottle_collect_sound.muted = isMuted;
+        if (world.coin_collect_sound) world.coin_collect_sound.muted = isMuted;
+        if (world.throw_bottle_sound) world.throw_bottle_sound.muted = isMuted;
+        if (world.game_won_sound) world.game_won_sound.muted = isMuted;
+        if (world.game_lost_sound) world.game_lost_sound.muted = isMuted;
+        // Endboss Musik
+        let endboss = world.level && world.level.enemies && world.level.enemies.find(e => e instanceof Endboss);
+        if (endboss && endboss.endboss_music) endboss.endboss_music.muted = isMuted;
+    }
+    // Button-Icon ändern
+    let btn = document.getElementById('mute-btn');
+    if (btn) btn.innerText = isMuted ? '🔈' : '🔇';
+}
 let canvas;
 let world;
 let keyboard = new Keyboard();
