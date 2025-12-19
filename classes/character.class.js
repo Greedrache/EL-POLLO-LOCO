@@ -1,4 +1,11 @@
 class Character extends MovableObject {
+        drawFrame(ctx) {
+            ctx.save();
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(this.x, this.y, this.width, this.height);
+            ctx.restore();
+        }
     sleep_sound = new Audio('audio/sleepsound.mp3');
 
     y = 180;
