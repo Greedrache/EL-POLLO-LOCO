@@ -123,57 +123,54 @@ class World {
     }
 
     draw() {
+        this._drawClearAndStage();
+        this._drawUI();
+        this._drawThrowables();
+        this._handleGameOverAndWin();
+        requestAnimationFrame(() => this.draw());
+    }
+
+    _drawClearAndStage() {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-
-        this.ctx.translate(this.camera_x, 0); 
-
+        this.ctx.translate(this.camera_x, 0);
         this.addObjecttoMap(this.level.backgroundObject);
         this.addObjecttoMap(this.level.clouds);
         this.addObjecttoMap(this.level.bottles);
         this.addObjecttoMap(this.level.coins);
         this.addObjecttoMap(this.level.enemies);
         this.addtoMap(this.character);
+        this.ctx.translate(-this.camera_x, 0);
+    }
 
-        this.ctx.translate(-this.camera_x, 0); 
+    _drawUI() {
         this.addtoMap(this.statusbar);
         this.addtoMap(this.statusbarBottle);
         this.addtoMap(this.statusbarCoin);
-
-        
         let endboss = this.level.enemies.find(e => e instanceof Endboss);
         if (endboss && !endboss.isDead && endboss.isAlerted) {
             this.statusbarEndboss.setPercentage(endboss.energy || 100);
             this.statusbarEndboss.draw(this.ctx);
         }
+    }
 
-        this.ctx.translate(this.camera_x, 0); 
+    _drawThrowables() {
+        this.ctx.translate(this.camera_x, 0);
         this.addObjecttoMap(this.throwableObjects);
-        this.ctx.translate(-this.camera_x, 0); 
+        this.ctx.translate(-this.camera_x, 0);
+    }
 
+    _handleGameOverAndWin() {
         if (this.character.isDead() && !this.gameOver) {
             this.gameOver = true;
             this.addtoMap(this.gameOverScreen);
             this.game_lost_sound.play();
-            
-            this.level.enemies.forEach((enemy) => {
-                if (enemy instanceof Endboss) {
-                    enemy.endboss_music.pause();
-                }
-            });
-            setTimeout(() => {
-                showReplayScreen();
-            }, 3000);
+            this.level.enemies.forEach((enemy) => { if (enemy instanceof Endboss) enemy.endboss_music.pause(); });
+            setTimeout(() => { showReplayScreen(); }, 3000);
         } else if (this.gameOver) {
             this.addtoMap(this.gameOverScreen);
         }
-
-        
         this.checkGameWon();
-        if (this.gameWon) {
-            this.addtoMap(this.gameWinScreen);
-        }
-
-        requestAnimationFrame(() => this.draw());
+        if (this.gameWon) this.addtoMap(this.gameWinScreen);
     }
 
     addObjecttoMap(objects) {

@@ -94,6 +94,12 @@ class Character extends MovableObject {
     }
 
     animate() {
+        this._setupMovementInterval();
+        this._setupAnimInterval();
+        this._setupJumpInterval();
+    }
+
+    _setupMovementInterval() {
         let moveInterval = setInterval(() => {
             if (this.isDead()) return;
             if (this.world && this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
@@ -104,15 +110,13 @@ class Character extends MovableObject {
                 this.moveLeft();
                 this.lastActionTime = new Date().getTime();
             }
-            if (this.world) {
-                this.world.camera_x = -this.x + 100;
-            }
-            if (this.world && this.world.keyboard.SPACE && !this.isAboveGround()) {
-                this.jump();
-            }
+            if (this.world) this.world.camera_x = -this.x + 100;
+            if (this.world && this.world.keyboard.SPACE && !this.isAboveGround()) this.jump();
         }, 1000 / 60);
         gameIntervals.push(moveInterval);
+    }
 
+    _setupAnimInterval() {
         let animInterval = setInterval(() => {
             if (this.isDead()) {
                 if (!this.deadAnimationPlayed) {
@@ -123,37 +127,29 @@ class Character extends MovableObject {
                     }
                     this.dead_sound.play();
                 }
-            }
-            else if (this.isHurt()) {
+            } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
                 this.hurt_sound.play();
-            }
-            else if (!this.isAboveGround()) {
-                if (this.world && (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) {
-                    this.playAnimation(this.IMAGES_WALKING);
-                } else {
+            } else if (!this.isAboveGround()) {
+                if (this.world && (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) this.playAnimation(this.IMAGES_WALKING);
+                else {
                     let timeSinceLastAction = new Date().getTime() - this.lastActionTime;
                     if (timeSinceLastAction > 30000) {
                         this.playAnimation(this.IMAGES_LONG_IDLE);
-                        if (this.sleep_sound.paused) {
-                            this.sleep_sound.currentTime = 0;
-                            this.sleep_sound.play();
-                        }
+                        if (this.sleep_sound.paused) { this.sleep_sound.currentTime = 0; this.sleep_sound.play(); }
                     } else {
                         this.playAnimation(this.IMAGES_IDLE);
-                        if (!this.sleep_sound.paused) {
-                            this.sleep_sound.pause();
-                            this.sleep_sound.currentTime = 0;
-                        }
+                        if (!this.sleep_sound.paused) { this.sleep_sound.pause(); this.sleep_sound.currentTime = 0; }
                     }
                 }
             }
         }, 50);
         gameIntervals.push(animInterval);
+    }
 
+    _setupJumpInterval() {
         let jumpInterval = setInterval(() => {
             if (this.isAboveGround() && !this.isDead() && !this.isHurt()) {
-                // play jump animation once per jump (don't loop)
                 this.playAnimation(this.IMAGES_JUMPING, false);
             }
         }, 100);
