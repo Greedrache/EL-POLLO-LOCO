@@ -57,7 +57,7 @@ class World {
             this.checkCoinCollisions();
             this.checkThrowableCollisions();
             this.checkEndbossAlert();
-        }, 200);
+        }, 50); // reduced interval for more reliable collision detection (was 200ms)
         gameIntervals.push(intervalId);
     }
 
