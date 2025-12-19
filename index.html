@@ -12,19 +12,22 @@
 <body onload="init()">
     <h1>El Pollo Loco</h1>
     <script>
-    // Kontextmenü auf allen Buttons verhindern
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('contextmenu', e => e.preventDefault());
+        // Kontextmenü auf allen Buttons verhindern
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('button').forEach(btn => {
+                btn.addEventListener('contextmenu', e => e.preventDefault());
+            });
         });
-    });
     </script>
 
     <div id="game-container">
         <canvas id="Canvas" width="720px" height="480px"> </canvas>
-        <div class="normalfont" id="pc-controls" style="margin-top: 12px; text-align: center; font-size: 1.1em;">
+        <nav class="normalfont">
             <h3>Steuerung (PC):</h3> <br>
-            <span>Gehen: A / D oder <kbd>&#8592;</kbd> / <kbd>&#8594;</kbd> &nbsp; | &nbsp; Springen: Leertaste &nbsp; | &nbsp; Werfen: S</span>
+            <span>Gehen: A / D oder <kbd>&#8592;</kbd> / <kbd>&#8594;</kbd> &nbsp; | &nbsp; Springen: Leertaste &nbsp; |
+                &nbsp; Werfen: S</span>
+        </nav>
+        <div id="pc-controls" style="margin-top: 12px; text-align: center; font-size: 1.1em;">
         </div>
         <button id="start-btn" onclick="startGame()">START</button>
         <button id="fullscreen-btn" onclick="toggleFullscreen()">⛶</button>
