@@ -143,6 +143,10 @@ function setupMobileControls() {
 
     _showMobileButtons(btns);
     _attachMobileListeners(btns);
+    // initial impressum visibility update and listen for orientation changes
+    updateImpressumVisibility();
+    window.addEventListener('resize', updateImpressumVisibility);
+    window.addEventListener('orientationchange', updateImpressumVisibility);
 }
 
 /**
@@ -165,11 +169,129 @@ function drawStartScreen() {
  */
 function startGame() {
     if (!gameStarted) {
+        // If device is not in landscape, prompt user to rotate first.
+        if (!isLandscape()) {
+            pendingStartRequested = true;
+            showRotateOverlay();
+            return;
+        }
+
         gameStarted = true;
         document.getElementById('start-btn').style.display = 'none';
         initLevel();
         world = new World(canvas, keyboard);
         backgroundMusic.play();
+    }
+}
+
+    // update impressum visibility after attempting to start
+    updateImpressumVisibility();
+
+/**
+ * Whether the viewport is in landscape orientation.
+ * @returns {boolean}
+ */
+function isLandscape() {
+    if (typeof window === 'undefined') return true;
+    return window.innerWidth >= window.innerHeight;
+}
+
+let pendingStartRequested = false;
+let _rotateListener = null;
+
+/**
+ * Create and show an overlay asking the user to rotate the device.
+ * @returns {void}
+ */
+function showRotateOverlay() {
+    if (document.getElementById('rotate-overlay')) return;
+    const overlay = document.createElement('div');
+    overlay.id = 'rotate-overlay';
+    overlay.style.position = 'fixed';
+    overlay.style.left = '0';
+    overlay.style.top = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.background = 'rgba(0,0,0,0.85)';
+    overlay.style.color = '#fff';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    overlay.style.zIndex = '9999';
+    overlay.innerHTML = `<div style="text-align:center;max-width:80%;">\
+        <h2 style=\"margin-bottom:0.5rem;\">Bitte Gerät drehen</h2>\
+        <p style=\"margin-top:0;\">Drehe dein Gerät ins Querformat, um das Spiel zu starten.</p>\
+        <button id=\"rotate-ok\" style=\"margin-top:1rem;padding:0.6rem 1rem;font-size:1rem;\">Ich habe gedreht</button>\
+    </div>`;
+    document.body.appendChild(overlay);
+
+    document.getElementById('rotate-ok').addEventListener('click', () => {
+        if (isLandscape()) {
+            hideRotateOverlay();
+            if (pendingStartRequested) { pendingStartRequested = false; startGame(); }
+        }
+    });
+
+    // Listen for orientation/resize and auto-start when rotated
+    _rotateListener = () => {
+        if (isLandscape()) {
+            hideRotateOverlay();
+            if (pendingStartRequested) { pendingStartRequested = false; startGame(); }
+            removeRotateListener();
+        }
+    };
+    window.addEventListener('orientationchange', _rotateListener);
+    window.addEventListener('resize', _rotateListener);
+}
+
+function removeRotateListener() {
+    if (!_rotateListener) return;
+    window.removeEventListener('orientationchange', _rotateListener);
+    window.removeEventListener('resize', _rotateListener);
+    _rotateListener = null;
+}
+
+/**
+ * Hide and remove the rotate overlay.
+ * @returns {void}
+ */
+function hideRotateOverlay() {
+    const overlay = document.getElementById('rotate-overlay');
+    if (overlay) overlay.remove();
+    removeRotateListener();
+}
+
+/**
+ * Hide all Impressum link buttons when in landscape or when the game is active.
+ * @returns {void}
+ */
+function _hideImpressumButtons() {
+    document.querySelectorAll('.impressum-link-btn').forEach(el => {
+        el.style.display = 'none';
+    });
+}
+
+/**
+ * Show Impressum link buttons (used when not in landscape and not in-game).
+ * @returns {void}
+ */
+function _showImpressumButtons() {
+    document.querySelectorAll('.impressum-link-btn').forEach(el => {
+        el.style.display = '';
+    });
+}
+
+/**
+ * Update Impressum visibility based on orientation and game state.
+ * @returns {void}
+ */
+function updateImpressumVisibility() {
+    if (isLandscape() || gameStarted) {
+        _hideImpressumButtons();
+        document.body.classList.add('compact-runtime');
+    } else {
+        _showImpressumButtons();
+        document.body.classList.remove('compact-runtime');
     }
 }
 
