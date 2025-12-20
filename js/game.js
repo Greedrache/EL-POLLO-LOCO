@@ -218,7 +218,7 @@ function showRotateOverlay() {
     overlay.style.alignItems = 'center';
     overlay.style.justifyContent = 'center';
     overlay.style.zIndex = '9999';
-    overlay.innerHTML = `<div style="text-align:center;max-width:80%;">\
+    overlay.innerHTML = `<div style="text-align:center;font-family: 'Arial', sans-serif; max-width:80%;">\
         <h2 style=\"margin-bottom:0.5rem;\">Bitte Gerät drehen</h2>\
         <p style=\"margin-top:0;\">Drehe dein Gerät ins Querformat, um das Spiel zu starten.</p>\
         <button id=\"rotate-ok\" style=\"margin-top:1rem;padding:0.6rem 1rem;font-size:1rem;\">Ich habe gedreht</button>\
