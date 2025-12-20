@@ -193,7 +193,7 @@ class Endboss extends MovableObject {
                 this.phase2CurrentLives = this.phase2Lives; // set lives (5)
                 this.energy = 100;
                 // stop first music and play a single phase-2 signal sound
-                try { this.endboss_music.pause(); } catch (e) {}
+                // keep `endboss_music` playing during phase 2
                 this.phase2Music = new Audio('audio/bossphase2.mp3');
                 this.phase2Music.loop = false; // play only once to signal phase 2 start
                 this.phase2Music.volume = 0.7;
