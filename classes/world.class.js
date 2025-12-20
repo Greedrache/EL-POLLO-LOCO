@@ -14,8 +14,6 @@ class World {
     statusbarCoin = new StatusbarCoin();
     statusbarEndboss = new EndbossStatusbar();
     throwableObjects = [];
-    lastThrowTime = 0;
-    throwCooldown = 1000; // ms
     gameOverScreen = new GameOverScreen();
     gameWinScreen = new GameOverScreen();
     gameOver = false;
@@ -112,18 +110,14 @@ class World {
 
     checkThrowObjects() {
         if (this.keyboard.THROW && this.collectedBottles > 0 && !this.character.isDead()) {
-            const now = Date.now();
-            if (now - this.lastThrowTime >= this.throwCooldown) {
-                let throwableObject = new ThrowableObject(
-                    this.character.x + 100,
-                    this.character.y + 100
-                );
-                this.throwableObjects.push(throwableObject);
-                this.collectedBottles--;
-                this.statusbarBottle.setPercentage(this.collectedBottles * 20);
-                this.throw_bottle_sound.play();
-                this.lastThrowTime = now;
-            }
+            let throwableObject = new ThrowableObject(
+                this.character.x + 100,
+                this.character.y + 100
+            );
+            this.throwableObjects.push(throwableObject);
+            this.collectedBottles--;
+            this.statusbarBottle.setPercentage(this.collectedBottles * 20);
+            this.throw_bottle_sound.play();
             this.keyboard.THROW = false;
         }
     }
@@ -153,9 +147,8 @@ class World {
         this.addtoMap(this.statusbarBottle);
         this.addtoMap(this.statusbarCoin);
         let endboss = this.level.enemies.find(e => e instanceof Endboss);
-        // Draw endboss statusbar when alerted or when dead (show empty bar on death).
-        if (endboss && (endboss.isAlerted || endboss.isDead)) {
-            this.statusbarEndboss.setPercentage(endboss.energy ?? 100);
+        if (endboss && !endboss.isDead && endboss.isAlerted) {
+            this.statusbarEndboss.setPercentage(endboss.energy || 100);
             this.statusbarEndboss.draw(this.ctx);
         }
     }
