@@ -1,3 +1,8 @@
+/**
+ * World
+ * Main game container: holds character, level objects, enemies, UI and game loop.
+ * @class
+ */
 class World {
     character = new Character();
     enemies = level1.enemies;

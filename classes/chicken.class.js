@@ -1,3 +1,8 @@
+/**
+ * Chicken
+ * Standard enemy with walking and dead animations.
+ * @extends MovableObject
+ */
 class Chicken extends MovableObject {
 
     y = 365;

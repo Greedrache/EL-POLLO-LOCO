@@ -1,3 +1,9 @@
+/**
+ * MovableObject
+ * Base class for objects that move and interact in the game world.
+ * Provides basic physics (gravity), collision checks and animation helpers.
+ * @extends DrawableObject
+ */
 class MovableObject extends DrawableObject {
     speed = 0.3;
     otherDirection = false;

@@ -1,3 +1,8 @@
+/**
+ * Level
+ * Container describing a game level: background objects, enemies, bottles and coins.
+ * Used to initialize `World` with level-specific data.
+ */
 class Level {
     enemies;
     clouds;

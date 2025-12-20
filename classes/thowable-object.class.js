@@ -1,3 +1,8 @@
+/**
+ * ThrowableObject
+ * Represents bottles that can be thrown by the character, handle rotation and splash.
+ * @extends MovableObject
+ */
 class ThrowableObject extends MovableObject {
 
 

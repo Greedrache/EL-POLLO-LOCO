@@ -1,3 +1,8 @@
+/**
+ * BabyChicken
+ * Small enemy with its own walking and death animations.
+ * @extends MovableObject
+ */
 class BabyChicken extends MovableObject {
 
     y = 365;

@@ -1,3 +1,8 @@
+/**
+ * DrawableObject
+ * Base class for drawable assets which manage images and drawing to canvas.
+ * Handles image caching and basic draw utilities used by game objects.
+ */
 class DrawableObject {
     x = 120;
     y = 280;

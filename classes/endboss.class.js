@@ -1,3 +1,8 @@
+/**
+ * Endboss
+ * Boss enemy that can alert, attack and spawn smaller chickens.
+ * @extends MovableObject
+ */
 class Endboss extends MovableObject {
     y = 60;
     height = 400;

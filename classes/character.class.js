@@ -1,3 +1,8 @@
+/**
+ * Character
+ * Player-controlled character: movement, sounds and state handling.
+ * @extends MovableObject
+ */
 class Character extends MovableObject {
     drawFrame(ctx) {
         ctx.save();
