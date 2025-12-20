@@ -14,6 +14,9 @@ class World {
     statusbarCoin = new StatusbarCoin();
     statusbarEndboss = new EndbossStatusbar();
     throwableObjects = [];
+    lastThrowTime = 0;
+    throwCooldown = 1000; // ms
+    canThrow = true;
     gameOverScreen = new GameOverScreen();
     gameWinScreen = new GameOverScreen();
     gameOver = false;
@@ -110,14 +113,20 @@ class World {
 
     checkThrowObjects() {
         if (this.keyboard.THROW && this.collectedBottles > 0 && !this.character.isDead()) {
-            let throwableObject = new ThrowableObject(
-                this.character.x + 100,
-                this.character.y + 100
-            );
-            this.throwableObjects.push(throwableObject);
-            this.collectedBottles--;
-            this.statusbarBottle.setPercentage(this.collectedBottles * 20);
-            this.throw_bottle_sound.play();
+            if (this.canThrow) {
+                let throwableObject = new ThrowableObject(
+                    this.character.x + 100,
+                    this.character.y + 100
+                );
+                this.throwableObjects.push(throwableObject);
+                this.collectedBottles--;
+                if (this.collectedBottles < 0) this.collectedBottles = 0;
+                this.statusbarBottle.setPercentage(this.collectedBottles * 20);
+                this.throw_bottle_sound.play();
+                this.canThrow = false;
+                this.lastThrowTime = Date.now();
+                setTimeout(() => { this.canThrow = true; }, this.throwCooldown);
+            }
             this.keyboard.THROW = false;
         }
     }
