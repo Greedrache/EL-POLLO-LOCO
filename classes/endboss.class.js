@@ -47,6 +47,10 @@ class Endboss extends MovableObject {
 
     isHurt = false;
     isDead = false;
+    isPhase2 = false;
+    phase2Music = null;
+    phase2Lives = 5;
+    phase2CurrentLives = 0;
     isAttacking = false;
     isWalking = false;
     hitCount = 0;
@@ -67,6 +71,28 @@ class Endboss extends MovableObject {
         this.animate();
         this.startMovement();
         this.startChickenSpawn();
+        this.startBottleSpawn();
+    }
+
+    startBottleSpawn() {
+        let spawnBottle = () => {
+            if (this.isDead) return;
+            if (this.world && this.world.level && this.world.level.bottles && this.isAlerted) {
+                // prevent too many bottles
+                if (this.world.level.bottles.length < 12) {
+                        // Spawn bottles to the left of the boss so the player can reach them
+                        // spawn between 100 and 500 px left of boss
+                        let bx = this.x - (100 + Math.random() * 400);
+                        if (bx < 0) bx = 50; // keep inside level
+                        let bottle = new Bottle(bx);
+                    this.world.level.bottles.push(bottle);
+                }
+            }
+                // next spawn between 1s and 3s (more frequent)
+                let next = 1000 + Math.random() * 2000;
+            this._bottleSpawnTimeout = setTimeout(spawnBottle, next);
+        };
+        spawnBottle();
     }
 
     startChickenSpawn() {
@@ -158,17 +184,42 @@ class Endboss extends MovableObject {
         if (this.isDead) return;
         this.isHurt = true;
         this.hitCount++;
-        // 3 Treffer = tot, 1 Treffer = 80%, 2 Treffer = 20%
-        if (this.hitCount >= 3) {
-            this.energy = 0;
-            this.isDead = true;
-            this.endboss_music.pause();
-            if (this._chickenSpawnTimeout) clearTimeout(this._chickenSpawnTimeout);
-        } else if (this.hitCount === 2) {
-            this.energy = 20;
-        } else if (this.hitCount === 1) {
-            this.energy = 80;
+        // Enter phase 2 on 3 hits (instead of dying). In phase2 another 3 hits will kill the boss.
+        if (!this.isPhase2) {
+            if (this.hitCount >= 3) {
+                // start phase 2
+                this.isPhase2 = true;
+                this.hitCount = 0; // reset
+                this.phase2CurrentLives = this.phase2Lives; // set lives (5)
+                this.energy = 100;
+                // stop first music and play a single phase-2 signal sound
+                try { this.endboss_music.pause(); } catch (e) {}
+                this.phase2Music = new Audio('audio/bossphase2.mp3');
+                this.phase2Music.loop = false; // play only once to signal phase 2 start
+                this.phase2Music.volume = 0.7;
+                this.phase2Music.play();
+                // make boss stronger in phase2
+                this.speed += 1.5;
+            } else if (this.hitCount === 2) {
+                this.energy = 20;
+            } else if (this.hitCount === 1) {
+                this.energy = 80;
+            }
+        } else {
+            // phase2: use discrete lives (5)
+            this.phase2CurrentLives--;
+            if (this.phase2CurrentLives < 0) this.phase2CurrentLives = 0;
+            // update energy so existing statusbar code reflects remaining lives
+            this.energy = Math.round((this.phase2CurrentLives / this.phase2Lives) * 100);
+            if (this.phase2CurrentLives <= 0) {
+                this.energy = 0;
+                this.isDead = true;
+                try { this.phase2Music.pause(); } catch (e) {}
+                if (this._chickenSpawnTimeout) clearTimeout(this._chickenSpawnTimeout);
+                if (this._bottleSpawnTimeout) clearTimeout(this._bottleSpawnTimeout);
+            }
         }
+
         setTimeout(() => {
             this.isHurt = false;
         }, 500);
