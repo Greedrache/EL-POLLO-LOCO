@@ -13,11 +13,21 @@ class DrawableObject {
     currentImage = 0;
 
     loadImage(path) {
+        /**
+         * Load a single image into this drawable object.
+         * @param {string} path - Image source path.
+         * @returns {void}
+         */
         this.img = new Image();
         this.img.src = path;
     }
 
     drawFrame(ctx) {
+        /**
+         * Draw a red debug frame around the object.
+         * @param {CanvasRenderingContext2D} ctx - Canvas rendering context.
+         * @returns {void}
+         */
         ctx.save();
         ctx.strokeStyle = 'red';
         ctx.lineWidth = 2;
@@ -26,10 +36,20 @@ class DrawableObject {
     }
 
     draw(ctx) {
+        /**
+         * Draw the object's current image to the canvas.
+         * @param {CanvasRenderingContext2D} ctx - Canvas rendering context.
+         * @returns {void}
+         */
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 
     loadImages(arr) {
+        /**
+         * Preload multiple images into the object's image cache.
+         * @param {string[]} arr - Array of image paths.
+         * @returns {void}
+         */
         arr.forEach((path) => {
             let img = new Image();
             img.src = path;

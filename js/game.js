@@ -1,5 +1,13 @@
+/**
+ * Global mute flag for game audio.
+ * @type {boolean}
+ */
 let isMuted = false;
 
+/**
+ * Toggle global mute state for the game.
+ * @returns {void}
+ */
 function toggleMute() {
     isMuted = !isMuted;
     setBackgroundMuted(isMuted);
@@ -7,10 +15,20 @@ function toggleMute() {
     updateMuteBtn();
 }
 
+/**
+ * Mute/unmute the global background music.
+ * @param {boolean} muted - Whether to mute the background music.
+ * @returns {void}
+ */
 function setBackgroundMuted(muted) {
     if (typeof backgroundMusic !== 'undefined') backgroundMusic.muted = muted;
 }
 
+/**
+ * Mute/unmute sounds attached to the current World instance.
+ * @param {boolean} muted - Whether to mute world sounds.
+ * @returns {void}
+ */
 function setWorldMuted(muted) {
     if (!world) return;
     ['bottle_collect_sound','coin_collect_sound','throw_bottle_sound','game_won_sound','game_lost_sound'].forEach(n => world[n] && (world[n].muted = muted));
@@ -20,6 +38,10 @@ function setWorldMuted(muted) {
     if (world.throwableObjects && world.throwableObjects.length) world.throwableObjects.forEach(o => o.splash_sound && (o.splash_sound.muted = muted));
 }
 
+/**
+ * Update the mute button UI to reflect current mute state.
+ * @returns {void}
+ */
 function updateMuteBtn() {
     let btn = document.getElementById('mute-btn');
     if (btn) btn.innerText = isMuted ? '🔇' : '🔈';
@@ -32,23 +54,39 @@ let startScreen;
 let backgroundMusic = new Audio('audio/backround-musik.mp3');
 let gameIntervals = [];
 
+/**
+ * Initialize game systems (canvas, music, mobile controls).
+ * @returns {void}
+ */
 function init() {
     setupCanvasAndStartScreen();
     setupBackgroundMusic();
     setupMobileControls();
 }
 
+/**
+ * Prepare canvas element and create the start screen instance.
+ * @returns {void}
+ */
 function setupCanvasAndStartScreen() {
     canvas = document.getElementById("Canvas");
     startScreen = new StartScreen();
     drawStartScreen();
 }
 
+/**
+ * Configure background music playback options.
+ * @returns {void}
+ */
 function setupBackgroundMusic() {
     backgroundMusic.loop = true;
     backgroundMusic.volume = 1;
 }
 
+/**
+ * Setup touch event handlers for mobile control buttons.
+ * @returns {void}
+ */
 function setupMobileControls() {
     let btnLeft = document.getElementById('btn-left');
     let btnRight = document.getElementById('btn-right');
@@ -65,6 +103,10 @@ function setupMobileControls() {
     btnThrow.addEventListener('touchend', () => { keyboard.THROW = false; });
 }
 
+/**
+ * Draw the selected start screen image onto the canvas.
+ * @returns {void}
+ */
 function drawStartScreen() {
     let ctx = canvas.getContext("2d");
     startScreen.img.onload = function() {
@@ -75,6 +117,10 @@ function drawStartScreen() {
     }
 }
 
+/**
+ * Start the game: initialize level, create World and play background music.
+ * @returns {void}
+ */
 function startGame() {
     if (!gameStarted) {
         gameStarted = true;
@@ -85,6 +131,10 @@ function startGame() {
     }
 }
 
+/**
+ * Show the replay screen and reset game intervals/state.
+ * @returns {void}
+ */
 function showReplayScreen() {
     gameIntervals.forEach(id => clearInterval(id));
     gameIntervals = [];
@@ -105,6 +155,10 @@ function showReplayScreen() {
     btn.style.display = 'block';
 }
 
+/**
+ * Toggle fullscreen mode for the game container element.
+ * @returns {void}
+ */
 function toggleFullscreen() {
     let gameContainer = document.getElementById('game-container');
     if (!document.fullscreenElement) {

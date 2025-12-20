@@ -32,6 +32,12 @@ class World {
     game_lost_sound = new Audio('audio/gamelost.mp3');
 
     constructor(canvas, keyboard) {
+        /**
+         * Create a World instance and start the main loops.
+         * @param {HTMLCanvasElement} canvas - The game canvas element.
+         * @param {Keyboard} keyboard - The keyboard input instance.
+         * @returns {void}
+         */
         this.ctx = canvas.getContext("2d");
         this.canvas = canvas;
         this.keyboard = keyboard;
@@ -44,6 +50,10 @@ class World {
     }
 
     setWorld() {
+        /**
+         * Assign world references to characters and enemies.
+         * @returns {void}
+         */
         this.character.world = this;
         this.character.keyboard = this.keyboard;
         this.level.enemies.forEach(enemy => {
@@ -54,6 +64,10 @@ class World {
     }
 
     run() {
+        /**
+         * Start periodic game checks (collisions, pickups, enemy AI).
+         * @returns {void}
+         */
         let intervalId = setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
@@ -67,6 +81,10 @@ class World {
     }
 
     checkEndbossAlert() {
+        /**
+         * Check and update Endboss alert/attack state based on player position.
+         * @returns {void}
+         */
         this.level.enemies.forEach((enemy) => {
             if (enemy instanceof Endboss) {
                 if (this.character.x > enemy.x - 500) {
@@ -83,6 +101,10 @@ class World {
     }
 
     checkGameWon() {
+        /**
+         * Determine if the game has been won (endboss defeated) and trigger win events.
+         * @returns {void}
+         */
         if (!this.gameWon) {
             this.level.enemies.forEach((enemy) => {
                 if (enemy instanceof Endboss && enemy.isDead && enemy.deadAnimationPlayed) {
@@ -99,6 +121,10 @@ class World {
     }
 
     checkClouds() {
+        /**
+         * Recycle cloud objects when they leave the viewport and randomize position/image.
+         * @returns {void}
+         */
         let cameraRight = -this.camera_x + 720;
         let cameraLeft = -this.camera_x;
         
@@ -114,6 +140,10 @@ class World {
     }
 
     checkThrowObjects() {
+        /**
+         * Create and throw a bottle if player pressed throw and has bottles.
+         * @returns {void}
+         */
         if (this.keyboard.THROW && this.collectedBottles > 0 && !this.character.isDead()) {
             let throwableObject = new ThrowableObject(
                 this.character.x + 100,
@@ -128,6 +158,10 @@ class World {
     }
 
     draw() {
+        /**
+         * Main draw loop — clears canvas, draws stage, UI and schedules next frame.
+         * @returns {void}
+         */
         this._drawClearAndStage();
         this._drawUI();
         this._drawThrowables();
@@ -136,6 +170,10 @@ class World {
     }
 
     _drawClearAndStage() {
+        /**
+         * Clear the canvas and draw background layers and character with camera transform.
+         * @returns {void}
+         */
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         this.ctx.translate(this.camera_x, 0);
         this.addObjecttoMap(this.level.backgroundObject);
@@ -148,6 +186,10 @@ class World {
     }
 
     _drawUI() {
+        /**
+         * Draw status bars and special UI elements (endboss health) if needed.
+         * @returns {void}
+         */
         this.addtoMap(this.statusbar);
         this.addtoMap(this.statusbarBottle);
         this.addtoMap(this.statusbarCoin);
@@ -159,12 +201,20 @@ class World {
     }
 
     _drawThrowables() {
+        /**
+         * Draw throwable objects (bottles) relative to camera.
+         * @returns {void}
+         */
         this.ctx.translate(this.camera_x, 0);
         this.addObjecttoMap(this.throwableObjects);
         this.ctx.translate(-this.camera_x, 0);
     }
 
     _handleGameOverAndWin() {
+        /**
+         * Handle game over and win screens, play related sounds and trigger replay.
+         * @returns {void}
+         */
         if (this.character.isDead() && !this.gameOver) {
             this.gameOver = true;
             this.addtoMap(this.gameOverScreen);
@@ -179,17 +229,26 @@ class World {
     }
 
     addObjecttoMap(objects) {
+        /**
+         * Add an array of drawable objects to the map.
+         * @param {Array} objects - Array of drawable objects.
+         * @returns {void}
+         */
         objects.forEach(o => {
             this.addtoMap(o);
         });
     }
 
     addtoMap(mo) {
+        /**
+         * Draw a single movable object onto the canvas, handling flips if needed.
+         * @param {Object} mo - Movable object with draw() method.
+         * @returns {void}
+         */
         if (mo.otherDirection) {
             this.spinImage(mo);
         }
         mo.draw(this.ctx);
-        // ...
 
         if (mo.otherDirection) {
             this.spinImageBack(mo);
@@ -197,6 +256,11 @@ class World {
     }
 
     spinImage(mo) {
+        /**
+         * Flip the canvas horizontally around the object's center to draw mirrored images.
+         * @param {Object} mo - Movable object to flip.
+         * @returns {void}
+         */
         this.ctx.save();
         this.ctx.translate(mo.x + mo.width / 2, 0);
         this.ctx.scale(-1, 1);
@@ -204,15 +268,30 @@ class World {
     }
 
     spinImageBack(mo) {
+        /**
+         * Restore canvas state after a flip performed by `spinImage`.
+         * @param {Object} mo - Movable object (unused but kept for symmetry).
+         * @returns {void}
+         */
         this.ctx.restore();
     }
 
     checkCollisions() {
+        /**
+         * Check collisions between player and enemies and handle outcomes.
+         * @returns {void}
+         */
         if (this.gameWon) return;
         this.level.enemies.forEach((enemy, index) => this._handleEnemyCollision(enemy, index));
     }
 
     _handleEnemyCollision(enemy, index) {
+        /**
+         * Internal: handle collision with a specific enemy instance.
+         * @param {Object} enemy - Enemy object collided with.
+         * @param {number} index - Index in enemy array.
+         * @returns {void}
+         */
         if (!this.character.isColliding(enemy)) return;
         if (enemy instanceof Endboss && !enemy.isDead) { this.character.energy = 0; this.statusbar.setPercentage(0); return; }
         if (enemy.isEndbossChicken && !enemy.chickenDead) { this.character.energy = 0; this.statusbar.setPercentage(0); return; }
@@ -221,6 +300,11 @@ class World {
     }
 
     _handleStomp(enemy) {
+        /**
+         * Perform the visual and gameplay effects when the player stomps an enemy.
+         * @param {Object} enemy - The enemy being stomped.
+         * @returns {void}
+         */
         for (let i = 0; i < 3; i++) {
             setTimeout(() => {
                 if (!enemy.chickenDead) {

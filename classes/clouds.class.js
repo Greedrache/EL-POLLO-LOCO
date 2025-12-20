@@ -1,6 +1,15 @@
+/**
+ * Cloud
+ * Moving cloud that drifts across the screen and recycles when off-screen.
+ * @extends MovableObject
+ */
 class Cloud extends MovableObject {
 
 
+    /**
+     * Cloud image variations.
+     * @type {string[]}
+     */
     IMAGES_CLOUDS = [
         "img/5_background/layers/4_clouds/1.png",
         "img/5_background/layers/4_clouds/2.png"
@@ -11,6 +20,11 @@ class Cloud extends MovableObject {
     height = 250;
 
     constructor(x) {
+        /**
+         * Create a cloud and start its movement.
+         * @param {number} [x] - Optional X position; random if omitted.
+         * @returns {void}
+         */
         super();
         let randomImage = this.IMAGES_CLOUDS[Math.floor(Math.random() * 2)];
         this.loadImage(randomImage);
@@ -22,6 +36,10 @@ class Cloud extends MovableObject {
 
 
     animate() {
+        /**
+         * Start movement interval to drift the cloud leftwards.
+         * @returns {void}
+         */
         let moveInterval = setInterval(() => {
             this.x -= this.speed;
         }, 1000 / 60);

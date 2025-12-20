@@ -23,6 +23,10 @@ class BabyChicken extends MovableObject {
     constructor() {
         super();
         this.loadImage(this.IMAGES_WALKING[0]);
+        /**
+         * Initialize BabyChicken position and animations.
+         * @returns {void}
+         */
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_DEAD);
 
@@ -33,6 +37,10 @@ class BabyChicken extends MovableObject {
     }
 
     animate() {
+        /**
+         * Start movement and animation intervals for the baby chicken.
+         * @returns {void}
+         */
         let moveInterval = setInterval(() => {
             if (!this.chickenDead) {
                 this.x -= this.speed;
@@ -49,6 +57,10 @@ class BabyChicken extends MovableObject {
     }
 
     die() {
+        /**
+         * Handle death state and switch to death image.
+         * @returns {void}
+         */
         this.chickenDead = true;
         this.loadImage(this.IMAGES_DEAD[0]);
         this.speed = 0;

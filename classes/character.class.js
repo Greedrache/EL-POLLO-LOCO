@@ -14,6 +14,10 @@ class Character extends MovableObject {
         ctx.strokeRect(boxX, this.y, boxWidth, this.height);
         ctx.restore();
     }
+    /**
+     * Initialize the character and preload animations.
+     * @returns {void}
+     */
     sleep_sound = new Audio('audio/sleepsound.mp3');
 
     y = 180;
@@ -86,6 +90,10 @@ class Character extends MovableObject {
 
     constructor() {
         super();
+        /**
+         * Construct the player character, set up sounds and animations.
+         * @returns {void}
+         */
         this.sleep_sound.volume = 0.5;
         this.loadImage("img/2_character_pepe/2_walk/W-21.png");
         this.loadImages(this.IMAGES_WALKING);
@@ -99,12 +107,20 @@ class Character extends MovableObject {
     }
 
     animate() {
+        /**
+         * Start character movement, animation and jump intervals.
+         * @returns {void}
+         */
         this._setupMovementInterval();
         this._setupAnimInterval();
         this._setupJumpInterval();
     }
 
     _setupMovementInterval() {
+        /**
+         * Setup the movement update interval (reads keyboard state and moves camera).
+         * @returns {void}
+         */
         let moveInterval = setInterval(() => {
             if (this.isDead()) return;
             if (this.world && this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
@@ -122,16 +138,28 @@ class Character extends MovableObject {
     }
 
     _setupAnimInterval() {
+        /**
+         * Setup the animation update interval.
+         * @returns {void}
+         */
         let animInterval = setInterval(() => this._updateAnim(), 50);
         gameIntervals.push(animInterval);
     }
 
     _updateAnim() {
+        /**
+         * Called on animation ticks to update current animation state.
+         * @returns {void}
+         */
         if (this._handleDeathOrHurt()) return;
         if (!this.isAboveGround()) this._handleGroundAnimations();
     }
 
     _handleDeathOrHurt() {
+        /**
+         * Handle death and hurt animations, returning true if a terminal state applied.
+         * @returns {boolean} true when death/hurt handling occurred.
+         */
         if (this.isDead()) {
             if (!this.deadAnimationPlayed) {
                 this.playAnimation(this.IMAGES_DEAD);
@@ -152,6 +180,10 @@ class Character extends MovableObject {
     }
 
     _handleGroundAnimations() {
+        /**
+         * Decide which ground animation to play (walking, idle or long idle).
+         * @returns {void}
+         */
         if (this.world && (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) { this.playAnimation(this.IMAGES_WALKING); return; }
         let timeSinceLastAction = new Date().getTime() - this.lastActionTime;
         if (timeSinceLastAction > 30000) {
@@ -164,6 +196,10 @@ class Character extends MovableObject {
     }
 
     _setupJumpInterval() {
+        /**
+         * Setup interval to update jump animation while in the air.
+         * @returns {void}
+         */
         let jumpInterval = setInterval(() => {
             if (this.isAboveGround() && !this.isDead() && !this.isHurt()) {
                 this.playAnimation(this.IMAGES_JUMPING, false);
@@ -173,6 +209,10 @@ class Character extends MovableObject {
     }
 
     jump() {
+        /**
+         * Initiate a jump by setting vertical speed and playing the jump sound.
+         * @returns {void}
+         */
         this.speedY = 22;
         this.jump_sound.play();
         this.lastActionTime = new Date().getTime();

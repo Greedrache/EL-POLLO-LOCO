@@ -22,6 +22,10 @@ class Chicken extends MovableObject {
 
 
     constructor() {
+        /**
+         * Create a Chicken enemy, preload images and start animation.
+         * @returns {void}
+         */
         super();
         this.loadImage("img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
         this.loadImages(this.IMAGES_WALKING);
@@ -34,6 +38,10 @@ class Chicken extends MovableObject {
     }
 
     animate() {
+        /**
+         * Start movement and walking animation intervals.
+         * @returns {void}
+         */
         let moveInterval = setInterval(() => {
             if (!this.chickenDead) {
                 this.x -= this.speed;
@@ -50,6 +58,10 @@ class Chicken extends MovableObject {
     }
 
     die() {
+        /**
+         * Switch to dead state and stop movement.
+         * @returns {void}
+         */
         this.chickenDead = true;
         this.loadImage(this.IMAGES_DEAD[0]);
         this.speed = 0;
