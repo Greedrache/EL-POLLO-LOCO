@@ -204,44 +204,71 @@ let _rotateListener = null;
  * @returns {void}
  */
 function showRotateOverlay() {
+    // If overlay already exists, don't recreate
     if (document.getElementById('rotate-overlay')) return;
-    const overlay = document.createElement('div');
-    overlay.id = 'rotate-overlay';
-    overlay.style.position = 'fixed';
-    overlay.style.left = '0';
-    overlay.style.top = '0';
-    overlay.style.width = '100%';
-    overlay.style.height = '100%';
-    overlay.style.background = 'rgba(0,0,0,0.85)';
-    overlay.style.color = '#fff';
-    overlay.style.display = 'flex';
-    overlay.style.alignItems = 'center';
-    overlay.style.justifyContent = 'center';
-    overlay.style.zIndex = '9999';
-    overlay.innerHTML = `<div style="text-align:center;font-family: 'Arial', sans-serif; max-width:80%;">\
-        <h2 style=\"margin-bottom:0.5rem;\">Bitte Gerät drehen</h2>\
-        <p style=\"margin-top:0;\">Drehe dein Gerät ins Querformat, um das Spiel zu starten.</p>\
-        <button id=\"rotate-ok\" style=\"margin-top:1rem;padding:0.6rem 1rem;font-size:1rem;\">Ich habe gedreht</button>\
-    </div>`;
+
+    /**
+     * Create the rotate overlay DOM element.
+     * @returns {HTMLDivElement} The overlay element.
+     */
+    function createRotateOverlay() {
+        const overlay = document.createElement('div');
+        overlay.id = 'rotate-overlay';
+        overlay.style.position = 'fixed';
+        overlay.style.left = '0';
+        overlay.style.top = '0';
+        overlay.style.width = '100%';
+        overlay.style.height = '100%';
+        overlay.style.background = 'rgba(0,0,0,0.85)';
+        overlay.style.color = '#fff';
+        overlay.style.display = 'flex';
+        overlay.style.alignItems = 'center';
+        overlay.style.justifyContent = 'center';
+        overlay.style.zIndex = '9999';
+        overlay.innerHTML = `<div style="text-align:center;font-family: 'Arial', sans-serif; max-width:80%;">\
+            <h2 style=\"margin-bottom:0.5rem;\">Bitte Gerät drehen</h2>\
+            <p style=\"margin-top:0;\">Drehe dein Gerät ins Querformat, um das Spiel zu starten.</p>\
+            <button id=\"rotate-ok\" style=\"margin-top:1rem;padding:0.6rem 1rem;font-size:1rem;\">Ich habe gedreht</button>\
+        </div>`;
+        return overlay;
+    }
+
+    /**
+     * Attach click handler to the overlay confirmation button.
+     * @param {HTMLDivElement} overlay
+     * @returns {void}
+     */
+    function attachRotateOkHandler(overlay) {
+        const btn = overlay.querySelector('#rotate-ok');
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+            if (isLandscape()) {
+                hideRotateOverlay();
+                if (pendingStartRequested) { pendingStartRequested = false; startGame(); }
+            }
+        });
+    }
+
+    /**
+     * Attach orientation/resize listeners that auto-close the overlay when rotated.
+     * @returns {void}
+     */
+    function attachRotateListeners() {
+        _rotateListener = () => {
+            if (isLandscape()) {
+                hideRotateOverlay();
+                if (pendingStartRequested) { pendingStartRequested = false; startGame(); }
+                removeRotateListener();
+            }
+        };
+        window.addEventListener('orientationchange', _rotateListener);
+        window.addEventListener('resize', _rotateListener);
+    }
+
+    const overlay = createRotateOverlay();
     document.body.appendChild(overlay);
-
-    document.getElementById('rotate-ok').addEventListener('click', () => {
-        if (isLandscape()) {
-            hideRotateOverlay();
-            if (pendingStartRequested) { pendingStartRequested = false; startGame(); }
-        }
-    });
-
-    // Listen for orientation/resize and auto-start when rotated
-    _rotateListener = () => {
-        if (isLandscape()) {
-            hideRotateOverlay();
-            if (pendingStartRequested) { pendingStartRequested = false; startGame(); }
-            removeRotateListener();
-        }
-    };
-    window.addEventListener('orientationchange', _rotateListener);
-    window.addEventListener('resize', _rotateListener);
+    attachRotateOkHandler(overlay);
+    attachRotateListeners();
 }
 
 function removeRotateListener() {
