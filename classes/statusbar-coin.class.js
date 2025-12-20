@@ -22,6 +22,11 @@ class StatusbarCoin extends DrawableObject {
     }
 
     setPercentage(percentage) {
+        /**
+         * Update coin statusbar percentage and image.
+         * @param {number} percentage
+         * @returns {void}
+         */
         this.percentage = percentage;
         let path = this.IMAGES_STATUSBAR_COIN[this.resolveImageIndex()];
         this.img = this.imageCache[path];
@@ -33,6 +38,10 @@ class StatusbarCoin extends DrawableObject {
     }
         
     resolveImageIndex() {
+        /**
+         * Map coin percentage to an image index.
+         * @returns {number}
+         */
         if (this.percentage == 100) {
             return 5;
         } else if (this.percentage >= 80) {

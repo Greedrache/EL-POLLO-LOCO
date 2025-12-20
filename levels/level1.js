@@ -1,5 +1,9 @@
 let level1;
 
+/**
+ * Initialize `level1` with enemies, clouds, background, bottles and coins.
+ * @returns {void}
+ */
 function initLevel() {
     level1 = new Level(
         [

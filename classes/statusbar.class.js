@@ -22,6 +22,11 @@ class Statusbar extends DrawableObject {
     }
 
     setPercentage(percentage) {
+        /**
+         * Update the statusbar percentage and display the corresponding image.
+         * @param {number} percentage
+         * @returns {void}
+         */
         this.percentage = percentage;
         let path = this.IMAGES_STATUSBAR[this.resolveImageIndex()];
         this.img = this.imageCache[path];
@@ -33,6 +38,10 @@ class Statusbar extends DrawableObject {
     }
         
     resolveImageIndex() {
+        /**
+         * Map the current percentage to an image index.
+         * @returns {number}
+         */
         if (this.percentage == 100) {
             return 5;
         } else if (this.percentage >= 80) {

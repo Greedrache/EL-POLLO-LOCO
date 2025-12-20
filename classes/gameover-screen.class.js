@@ -14,6 +14,10 @@ class GameOverScreen extends DrawableObject {
     ];
 
     constructor() {
+        /**
+         * Create a GameOverScreen and select a random game-over image.
+         * @returns {void}
+         */
         super();
         let randomImage = this.IMAGE_GAMEOVER[Math.floor(Math.random() * this.IMAGE_GAMEOVER.length)];
         this.loadImage(randomImage);
@@ -24,6 +28,10 @@ class GameOverScreen extends DrawableObject {
     }
 
     showWinScreen() {
+        /**
+         * Switch to a randomly selected win image and center it on screen.
+         * @returns {void}
+         */
         let randomImage = this.IMAGES_GAMEWIN[Math.floor(Math.random() * this.IMAGES_GAMEWIN.length)];
         this.loadImage(randomImage);
         this.width = 500;

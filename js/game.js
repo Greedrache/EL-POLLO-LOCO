@@ -87,20 +87,62 @@ function setupBackgroundMusic() {
  * Setup touch event handlers for mobile control buttons.
  * @returns {void}
  */
+function _isTouchableDevice() {
+    return (typeof window !== 'undefined') && (('ontouchstart' in window) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0));
+}
+
+function _getMobileButtons() {
+    const btnLeft = document.getElementById('btn-left');
+    const btnRight = document.getElementById('btn-right');
+    const btnJump = document.getElementById('btn-jump');
+    const btnThrow = document.getElementById('btn-throw');
+    if (!btnLeft || !btnRight || !btnJump || !btnThrow) return null;
+    return { btnLeft, btnRight, btnJump, btnThrow };
+}
+
+function _hideMobileButtons(btns) {
+    btns.btnLeft.style.display = 'none';
+    btns.btnRight.style.display = 'none';
+    btns.btnJump.style.display = 'none';
+    btns.btnThrow.style.display = 'none';
+}
+
+function _showMobileButtons(btns) {
+    btns.btnLeft.style.display = 'block';
+    btns.btnRight.style.display = 'block';
+    btns.btnJump.style.display = 'block';
+    btns.btnThrow.style.display = 'block';
+}
+
+function _attachMobileListeners(btns) {
+    btns.btnLeft.addEventListener('touchstart', () => { keyboard.LEFT = true; });
+    btns.btnLeft.addEventListener('touchend', () => { keyboard.LEFT = false; });
+    btns.btnRight.addEventListener('touchstart', () => { keyboard.RIGHT = true; });
+    btns.btnRight.addEventListener('touchend', () => { keyboard.RIGHT = false; });
+    btns.btnJump.addEventListener('touchstart', () => { keyboard.SPACE = true; });
+    btns.btnJump.addEventListener('touchend', () => { keyboard.SPACE = false; });
+    btns.btnThrow.addEventListener('touchstart', () => { keyboard.THROW = true; });
+    btns.btnThrow.addEventListener('touchend', () => { keyboard.THROW = false; });
+}
+
+/**
+ * Setup touch event handlers for mobile control buttons.
+ * This function is now split into helpers: it finds buttons, hides them
+ * for non-touch devices and attaches listeners only on touch devices.
+ * @returns {void}
+ */
 function setupMobileControls() {
-    let btnLeft = document.getElementById('btn-left');
-    let btnRight = document.getElementById('btn-right');
-    let btnJump = document.getElementById('btn-jump');
-    let btnThrow = document.getElementById('btn-throw');
-    if (!btnLeft || !btnRight || !btnJump || !btnThrow) return;
-    btnLeft.addEventListener('touchstart', () => { keyboard.LEFT = true; });
-    btnLeft.addEventListener('touchend', () => { keyboard.LEFT = false; });
-    btnRight.addEventListener('touchstart', () => { keyboard.RIGHT = true; });
-    btnRight.addEventListener('touchend', () => { keyboard.RIGHT = false; });
-    btnJump.addEventListener('touchstart', () => { keyboard.SPACE = true; });
-    btnJump.addEventListener('touchend', () => { keyboard.SPACE = false; });
-    btnThrow.addEventListener('touchstart', () => { keyboard.THROW = true; });
-    btnThrow.addEventListener('touchend', () => { keyboard.THROW = false; });
+    const btns = _getMobileButtons();
+    if (!btns) return;
+
+    const isTouchable = _isTouchableDevice();
+    if (!isTouchable) {
+        _hideMobileButtons(btns);
+        return;
+    }
+
+    _showMobileButtons(btns);
+    _attachMobileListeners(btns);
 }
 
 /**

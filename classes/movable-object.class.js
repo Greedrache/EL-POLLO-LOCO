@@ -14,6 +14,11 @@ class MovableObject extends DrawableObject {
     _currentAnimation = null;
 
     isAboveGround() {
+        /**
+         * Check whether the object is above the ground.
+         * For throwable objects the ground level differs from other objects.
+         * @returns {boolean}
+         */
         if (this instanceof ThrowableObject) {
             if (this.isSplashing) return false;
             return this.y < 350;
@@ -23,6 +28,10 @@ class MovableObject extends DrawableObject {
     }
 
     applyGravity() {
+        /**
+         * Start applying gravity to the object by updating vertical speed and position.
+         * @returns {void}
+         */
         let gravityInterval = setInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
                 this.y -= this.speedY;
@@ -33,6 +42,11 @@ class MovableObject extends DrawableObject {
     }
 
     isColliding(mo) {
+        /**
+         * Axis-aligned bounding box collision detection with a shrink factor.
+         * @param {Object} mo - Other movable object to test against.
+         * @returns {boolean}
+         */
         const shrink = 0.2;
         const offsetSelfX = this.x + (this.width * shrink) / 2;
         const offsetSelfY = this.y + (this.height * shrink) / 2;
@@ -51,6 +65,11 @@ class MovableObject extends DrawableObject {
     }
 
     drawFrame(ctx) {
+        /**
+         * Draw a debug frame around the object's collision box.
+         * @param {CanvasRenderingContext2D} ctx
+         * @returns {void}
+         */
         const shrink = 0.2;
         const offsetX = this.x + (this.width * shrink) / 2;
         const offsetY = this.y + (this.height * shrink) / 2;
@@ -64,6 +83,10 @@ class MovableObject extends DrawableObject {
     }
 
     hit() {
+        /**
+         * Apply damage to this object and record hit time for invulnerability frames.
+         * @returns {void}
+         */
         this.energy -= 5;
         if (this.energy < 0) {
             this.energy = 0;
@@ -73,35 +96,68 @@ class MovableObject extends DrawableObject {
     }
 
     isHurt() {
+        /**
+         * Check whether the object is in a hurt state (recently hit).
+         * @returns {boolean}
+         */
         let timepassed = new Date().getTime() - this.lastHit;
         timepassed = timepassed / 1000;
         return timepassed < 1;
     }
 
     isDead() {
+        /**
+         * Whether the object has no energy left.
+         * @returns {boolean}
+         */
         return this.energy == 0;
     }
 
     moveRight() {
+        /**
+         * Move the object to the right by its speed.
+         * @returns {void}
+         */
         this.x += this.speed;
         this.otherDirection = false;
     }
 
     moveLeft() {
+        /**
+         * Move the object to the left by its speed.
+         * @returns {void}
+         */
         this.x -= this.speed;
         this.otherDirection = true;
     }
 
     jump() {
+        /**
+         * Set an upward speed to initiate a jump.
+         * @returns {void}
+         */
         this.speedY = 30;
     }
 
     playAnimation(images, loop = true) {
+        /**
+         * Start or continue playing an animation sequence.
+         * @param {string[]} images - Array of image paths.
+         * @param {boolean} [loop=true] - Whether to loop the animation.
+         * @returns {void}
+         */
         if (this._currentAnimation !== images) { this._currentAnimation = images; this.currentImage = 0; }
         this._advanceAnimation(images, loop);
     }
 
     _advanceAnimation(images, loop) {
+        /**
+         * Advance the animation frame, handling loop or final frame.
+         * @private
+         * @param {string[]} images
+         * @param {boolean} loop
+         * @returns {void}
+         */
         if (this.currentImage >= images.length) this.currentImage = loop ? 0 : images.length - 1;
         const path = images[this.currentImage];
         this.img = this.imageCache[path];

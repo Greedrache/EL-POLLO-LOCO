@@ -15,6 +15,11 @@ class EndbossStatusbar extends DrawableObject {
         
     }
     setPercentage(percentage) {
+        /**
+         * Update endboss statusbar percentage and clamp value between 0 and 100.
+         * @param {number} percentage
+         * @returns {void}
+         */
         this.percentage = percentage;
         if(this.percentage < 0) this.percentage = 0;
         if(this.percentage > 100) this.percentage = 100;
@@ -22,6 +27,10 @@ class EndbossStatusbar extends DrawableObject {
         this.img = this.imageCache[path];
     }
     resolveImageIndex() {
+        /**
+         * Map endboss percentage to the correct image index.
+         * @returns {number}
+         */
         if (this.percentage >= 100) {
             return 3;
         } else if (this.percentage >= 80) {
@@ -34,7 +43,11 @@ class EndbossStatusbar extends DrawableObject {
     }
     
     draw(ctx) {
-        
+        /**
+         * Position the endboss statusbar centered at the bottom and draw it.
+         * @param {CanvasRenderingContext2D} ctx
+         * @returns {void}
+         */
         const canvas = ctx.canvas;
         this.x = (canvas.width / 2) - (this.width / 2);
         this.y = canvas.height - this.height - 10;

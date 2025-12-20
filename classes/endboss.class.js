@@ -59,6 +59,10 @@ class Endboss extends MovableObject {
     speed = 2;
 
     constructor() {
+        /**
+         * Initialize the endboss, preload images and start AI/animations.
+         * @returns {void}
+         */
         super();
         this.loadImage(this.IMAGES_ALERT[0]);
         this.loadImages(this.IMAGES_ALERT);
@@ -75,6 +79,10 @@ class Endboss extends MovableObject {
     }
 
     startChickenSpawn() {
+        /**
+         * Periodically spawn small chickens when the endboss is alerted.
+         * @returns {void}
+         */
         let spawnChicken = () => {
             if (this.isDead) return;
             if (this.world && this.world.level && this.world.level.enemies && this.isAlerted) {
@@ -92,7 +100,10 @@ class Endboss extends MovableObject {
     }
 
     startMovement() {
-        
+        /**
+         * Start AI movement timers for walking behavior and position updates.
+         * @returns {void}
+         */
         let walkInterval = setInterval(() => {
             if (this.isAlerted && !this.isDead && !this.isHurt) {
                 this.isWalking = Math.random() > 0.3;
@@ -109,11 +120,19 @@ class Endboss extends MovableObject {
     }
 
     animate() {
+        /**
+         * Start the animation interval which updates sprite state.
+         * @returns {void}
+         */
         let animInterval = setInterval(() => this._updateAnim(), 200);
         gameIntervals.push(animInterval);
     }
 
     _updateAnim() {
+        /**
+         * Per-tick animation update, handling death, hurt and action states.
+         * @returns {void}
+         */
         if (this._handleDeath()) return;
         if (this.isHurt) { this.playAnimation(this.IMAGES_HURT); return; }
         if (this._handleActionAnimations()) return;
@@ -121,6 +140,10 @@ class Endboss extends MovableObject {
     }
 
     _handleDeath() {
+        /**
+         * Play death animation once and return whether death handling occurred.
+         * @returns {boolean}
+         */
         if (!this.isDead) return false;
         if (!this.deadAnimationPlayed) {
             this.playAnimation(this.IMAGES_DEAD);
@@ -133,6 +156,10 @@ class Endboss extends MovableObject {
     }
 
     _handleActionAnimations() {
+        /**
+         * Handle attack/walk/alert animations and return whether any applied.
+         * @returns {boolean}
+         */
         if (this.isAttacking) { this.playAnimation(this.IMAGES_ATTACK); return true; }
         if (this.isWalking && this.isAlerted) { this.playAnimation(this.IMAGES_WALKING); return true; }
         if (this.isAlerted) { this.playAnimation(this.IMAGES_ALERT); return true; }
@@ -140,6 +167,10 @@ class Endboss extends MovableObject {
     }
 
     alert() {
+        /**
+         * Set the endboss into alerted state and start boss music.
+         * @returns {void}
+         */
         if (!this.isAlerted) {
             this.isAlerted = true;
             this.endboss_music.play();
@@ -150,16 +181,28 @@ class Endboss extends MovableObject {
     }
 
     attack() {
+        /**
+         * Begin attack state if conditions allow.
+         * @returns {void}
+         */
         if (!this.isDead && !this.isHurt && this.isAlerted) {
             this.isAttacking = true;
         }
     }
 
     stopAttack() {
+        /**
+         * Stop attacking.
+         * @returns {void}
+         */
         this.isAttacking = false;
     }
 
     hit() {
+        /**
+         * Apply a hit to the endboss, update energy and handle death conditions.
+         * @returns {void}
+         */
         if (this.isDead) return;
         this.isHurt = true;
         this.hitCount++;

@@ -28,6 +28,12 @@ class ThrowableObject extends MovableObject {
     splash_sound = new Audio('audio/splashhitted.mp3');
 
     constructor(x, y) {
+        /**
+         * Create a throwable bottle and start its throw and rotation animation.
+         * @param {number} x - Initial x position.
+         * @param {number} y - Initial y position.
+         * @returns {void}
+         */
         super();
         this.loadImage("img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png");
         this.loadImages(this.IMAGES_BOTTLE_ROTATE);
@@ -42,6 +48,10 @@ class ThrowableObject extends MovableObject {
     }
 
     animate() {
+        /**
+         * Start rotation animation while the bottle is airborne.
+         * @returns {void}
+         */
         let rotateInterval = setInterval(() => {
             if (!this.isSplashing) {
                 this.playAnimation(this.IMAGES_BOTTLE_ROTATE);
@@ -51,6 +61,10 @@ class ThrowableObject extends MovableObject {
     }
 
     trow() {
+        /**
+         * Propel the bottle forward with an initial vertical speed and horizontal motion.
+         * @returns {void}
+         */
         this.speedY = 30;
         this.applyGravity();
         let throwInterval = setInterval(() => {
@@ -62,6 +76,10 @@ class ThrowableObject extends MovableObject {
     }
 
     splash() {
+        /**
+         * Trigger the splash animation and play splash sound once.
+         * @returns {void}
+         */
         if (!this.isSplashing) {
             this.isSplashing = true;
             this.speedY = 0;
@@ -80,6 +98,10 @@ class ThrowableObject extends MovableObject {
     }
 
     hasHitGround() {
+        /**
+         * Whether the bottle has reached the ground level.
+         * @returns {boolean}
+         */
         return this.y >= 350;
     }
 }

@@ -6,6 +6,12 @@ class Coin extends MovableObject {
     ];
 
     constructor(x, y) {
+        /**
+         * Create a coin at the given position and start its spin animation.
+         * @param {number} x
+         * @param {number} y
+         * @returns {void}
+         */
         super();
         this.loadImage(this.IMAGES_COIN[0]);
         this.loadImages(this.IMAGES_COIN);
@@ -17,6 +23,10 @@ class Coin extends MovableObject {
     }
 
     animate() {
+        /**
+         * Start coin animation interval to alternate frames.
+         * @returns {void}
+         */
         let animInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_COIN);
         }, 300);
