@@ -20,14 +20,17 @@
 
         /* Mobile Controls (hidden by default, shown only on touch devices) */
         #mobile-controls {
-            position: absolute;
+            position: fixed;
             bottom: 10px;
             left: 0;
+            right: 0;
             width: 100%;
             display: none; /* default hidden */
             justify-content: space-between;
             pointer-events: none;
-            z-index: 20;
+            z-index: 9999;
+            padding-bottom: constant(safe-area-inset-bottom);
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
         /* When a touch-capable device is detected, body will get .touch-device */
