@@ -102,7 +102,8 @@ class Endboss extends MovableObject {
                 let baby = new BabyChicken();
                 baby.x = this.x + 50 + Math.random() * 100;
                 baby.y = 365;
-                baby.speed = 8;
+                // make spawned baby chickens faster in phase 2
+                baby.speed = this.isPhase2 ? (12 + Math.random() * 2) : 8;
                 baby.isEndbossChicken = true;
                 this.world.level.enemies.push(baby);
             }
