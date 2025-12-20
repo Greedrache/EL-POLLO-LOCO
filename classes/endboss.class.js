@@ -73,12 +73,12 @@ class Endboss extends MovableObject {
         let spawnChicken = () => {
             if (this.isDead) return;
             if (this.world && this.world.level && this.world.level.enemies && this.isAlerted) {
-                let chicken = new Chicken();
-                chicken.x = this.x + 50 + Math.random() * 100;
-                chicken.y = 365;
-                chicken.speed = 8;
-                chicken.isEndbossChicken = true;
-                this.world.level.enemies.push(chicken);
+                let baby = new BabyChicken();
+                baby.x = this.x + 50 + Math.random() * 100;
+                baby.y = 365;
+                baby.speed = 8;
+                baby.isEndbossChicken = true;
+                this.world.level.enemies.push(baby);
             }
             let next = 2000 + Math.random() * 0.0001;
             this._chickenSpawnTimeout = setTimeout(spawnChicken, next);
