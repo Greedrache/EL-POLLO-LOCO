@@ -91,3 +91,26 @@ body {
     .impressumdiv h2 { font-size: 16px; }
     .impressumdiv p  { font-size: 16px; }
 }
+
+/* back button on impressum page */
+.impressum-back-btn {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    border: none;
+    font-size: 24px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    z-index: 10001;
+}
+.impressum-back-btn:hover { background: rgba(0,0,0,0.8); }
+
+@media (max-width: 480px) {
+    .impressum-back-btn { top: 10px; left: 10px; width: 36px; height: 36px; font-size: 20px; }
+}

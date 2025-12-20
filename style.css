@@ -241,13 +241,41 @@
             }
         }
 
+    /* Orientation notice: hidden by default, shown briefly when .visible is added */
+    #orientation-notice {
+        display: none;
+        position: fixed;
+        top: 18px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-10px);
+        background: rgba(0,0,0,0.75);
+        color: #fff;
+        padding: 8px 14px;
+        border-radius: 10px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        z-index: 10000;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    #orientation-notice.visible {
+        display: block;
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+
 /* Impressum link/button fixed bottom-center */
 .impressum-link-btn {
-    position: fixed;
-    bottom: 18px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: inline-block;
+    position: static;
+    display: block;
+    width: fit-content;
+    /* push to bottom of viewport when possible (body is column flex) */
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: 20px;
     padding: 12px 20px;
     background: linear-gradient(180deg,#ff6b00,#ff8a2b);
     color: #fff;
@@ -255,7 +283,6 @@
     border-radius: 28px;
     box-shadow: 0 6px 18px rgba(0,0,0,0.12);
     transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
-    z-index: 999;
     font-weight: 600;
     font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
@@ -263,15 +290,15 @@
 }
 .impressum-link-btn:hover,
 .impressum-link-btn:focus {
-    transform: translateX(-50%) translateY(-4px) scale(1.02);
+    transform: translateY(-4px) scale(1.02);
     box-shadow: 0 12px 26px rgba(0,0,0,0.22);
     background: linear-gradient(180deg,#ff7b1a,#ff9b49);
     outline: none;
 }
 
 @media (max-width: 600px) {
-    .impressum-link-btn { bottom: 12px; padding: 10px 16px; font-size: 15px; }
+    .impressum-link-btn { margin: 18px auto 32px; padding: 10px 16px; font-size: 15px; }
 }
 @media (max-width: 320px) {
-    .impressum-link-btn { bottom: 10px; padding: 8px 14px; font-size: 14px; }
+    .impressum-link-btn { margin: 14px auto 28px; padding: 8px 14px; font-size: 14px; }
 }
